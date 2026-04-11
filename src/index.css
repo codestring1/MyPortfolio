@@ -1,0 +1,428 @@
+/* ─── Google Fonts ────────────────────────────────────────── */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ─── CSS Custom Properties ───────────────────────────────── */
+:root {
+  /* Common Accents (Matching Android Portfolio App) */
+  --neon-cyan-rgb: 0, 229, 255;    /* #00E5FF */
+  --neon-purple-rgb: 213, 0, 249;  /* #D500F9 */
+  --error-red-rgb: 255, 42, 109;
+  --cyber-yellow-rgb: 255, 229, 0;
+
+  /* Legacy aliases for plain CSS usage */
+  --neon-cyan: rgb(var(--neon-cyan-rgb));
+  --neon-purple: rgb(var(--neon-purple-rgb));
+  --error-red: rgb(var(--error-red-rgb));
+
+  /* Theme Specific (Light Mode Default) */
+  --cyber-black: 249, 250, 251; /* #F9FAFB */
+  --deep-space: 255, 255, 255;  /* #FFFFFF */
+  --text-main: #111827;
+  --text-dim: #4B5563;
+  --surface: rgba(0, 0, 0, 0.04);
+  --border: rgba(0, 0, 0, 0.08);
+  --border-active: rgba(0, 229, 255, 0.3);
+  --grid-color: rgba(0, 229, 255, 0.05);
+}
+
+.dark {
+  --cyber-black: 5, 5, 5;       /* #050505 - Android darkBg */
+  --deep-space: 26, 26, 46;     /* #1A1A2E - Android Gradient depth */
+  --text-main: #FFFFFF;
+  --text-dim: #9CA3AF;
+  --surface: rgba(255, 255, 255, 0.04);
+  --border: rgba(255, 255, 255, 0.08);
+  --border-active: rgba(0, 229, 255, 0.5);
+  --grid-color: rgba(0, 229, 255, 0.03);
+}
+
+/* ─── Base Reset ──────────────────────────────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Update body/root to handle the new RGB format for backgrounds */
+body {
+  font-family: 'Inter', system-ui, sans-serif;
+  background-color: rgb(var(--cyber-black));
+  color: var(--text-main);
+  min-height: 100dvh;
+  overflow-x: hidden;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+#root {
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ─── Scrollbar Styling ───────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+::-webkit-scrollbar-track {
+  background: var(--deep-space);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--neon-cyan);
+  border-radius: 99px;
+  opacity: 0.5;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--matrix-green);
+}
+
+/* ─── Selection ───────────────────────────────────────────── */
+::selection {
+  background: rgba(0, 163, 255, 0.25);
+  color: #fff;
+}
+
+/* ─────────────────────────────────────────────────────────── */
+/*  COMPONENT LAYER                                            */
+/* ─────────────────────────────────────────────────────────── */
+@layer components {
+
+  /* Cyber Grid Background */
+  .cyber-grid {
+    background-image:
+      linear-gradient(var(--grid-color) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
+    background-size: 40px 40px;
+  }
+
+  /* Glassmorphism Card */
+  .glass-card {
+    background-color: var(--surface);
+    backdrop-filter: blur(12px);
+    border: 1px solid var(--border);
+    border-radius: 1rem;
+    transition: all 0.3s ease;
+  }
+
+  .glass-card-hover {
+    @apply glass-card transition-all duration-300;
+  }
+  .glass-card-hover:hover {
+    @apply border-neonCyan/30;
+    box-shadow: 0 8px 32px rgba(0, 163, 255, 0.15);
+    transform: translateY(-2px);
+  }
+
+  /* Neon Cyan Button */
+  .btn-primary {
+    @apply relative inline-flex items-center justify-center gap-2 px-6 py-3
+           bg-neonCyan text-white font-semibold rounded-xl text-sm
+           transition-all duration-200 overflow-hidden;
+  }
+
+  .btn-primary:hover {
+    box-shadow: 0 0 20px rgba(0, 163, 255, 0.6), 0 0 40px rgba(0, 163, 255, 0.3);
+    transform: translateY(-1px);
+  }
+  .btn-primary:active {
+    transform: translateY(0);
+  }
+  .btn-primary:disabled {
+    @apply opacity-50 cursor-not-allowed;
+    transform: none;
+    box-shadow: none;
+  }
+
+  /* Ghost / Outline Button */
+  .btn-ghost {
+    @apply inline-flex items-center justify-center gap-2 px-6 py-3
+           border border-white/20 text-gray-300 font-medium rounded-xl text-sm
+           transition-all duration-200;
+  }
+  .btn-ghost:hover {
+    border-color: rgb(var(--neon-cyan-rgb) / 0.5);
+    color: var(--neon-cyan);
+    background-color: rgb(var(--neon-cyan-rgb) / 0.05);
+  }
+
+  /* Danger Button */
+  .btn-danger {
+    @apply inline-flex items-center justify-center gap-2 px-5 py-2.5
+           font-medium rounded-xl text-sm transition-all duration-200;
+    border: 1px solid rgb(var(--error-red-rgb) / 0.4);
+    color: var(--error-red);
+  }
+  .btn-danger:hover {
+    background-color: rgb(var(--error-red-rgb) / 0.1);
+    border-color: rgb(var(--error-red-rgb) / 0.8);
+    box-shadow: 0 0 12px rgba(var(--error-red-rgb), 0.3);
+  }
+
+  /* Input Field */
+  .input-cyber {
+    @apply w-full rounded-xl px-4 py-3 placeholder-gray-600 text-sm outline-none
+           transition-all duration-200;
+    background-color: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--text-main);
+  }
+  .input-cyber:focus {
+    border-color: rgb(var(--neon-cyan-rgb) / 0.6);
+    background-color: rgb(var(--neon-cyan-rgb) / 0.04);
+    box-shadow: 0 0 0 3px rgb(var(--neon-cyan-rgb) / 0.1);
+  }
+  .input-cyber:disabled {
+    @apply opacity-40 cursor-not-allowed;
+  }
+
+  /* Label */
+  .input-label {
+    @apply block text-xs font-medium mb-1.5 tracking-wide uppercase;
+    color: var(--text-dim);
+  }
+
+  /* Neon text glow */
+  .text-glow-cyan {
+    text-shadow: 0 0 10px rgb(var(--neon-cyan-rgb) / 0.8), 0 0 20px rgb(var(--neon-cyan-rgb) / 0.4);
+  }
+  .text-glow-green {
+    text-shadow: 0 0 10px rgb(var(--matrix-green-rgb) / 0.8), 0 0 20px rgb(var(--matrix-green-rgb) / 0.4);
+  }
+
+  /* Badge / Chip */
+  .badge-cyan {
+    @apply inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-medium;
+    background-color: rgb(var(--neon-cyan-rgb) / 0.1);
+    color: var(--neon-cyan);
+    border: 1px solid rgb(var(--neon-cyan-rgb) / 0.2);
+  }
+  .badge-green {
+    @apply inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-medium;
+    background-color: rgb(var(--matrix-green-rgb) / 0.1);
+    color: var(--matrix-green);
+    border: 1px solid rgb(var(--matrix-green-rgb) / 0.2);
+  }
+  .badge-purple {
+    @apply inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-medium;
+    background-color: rgb(var(--neon-purple-rgb) / 0.2);
+    color: rgb(var(--neon-purple-rgb));
+    border: 1px solid rgb(var(--neon-purple-rgb) / 0.3);
+  }
+  .badge-red {
+    @apply inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-medium;
+    background-color: rgb(var(--error-red-rgb) / 0.1);
+    color: var(--error-red);
+    border: 1px solid rgb(var(--error-red-rgb) / 0.2);
+  }
+
+  /* Floating Action Button */
+  .fab {
+    @apply fixed bottom-24 right-6 z-40 w-14 h-14 rounded-2xl
+           text-black flex items-center justify-center
+           transition-all duration-300;
+    background-color: var(--neon-cyan);
+    box-shadow: 0 0 20px rgb(var(--neon-cyan-rgb) / 0.4);
+  }
+  .fab:hover {
+    @apply scale-110;
+    box-shadow: 0 0 30px rgba(0, 163, 255, 0.7), 0 0 60px rgba(0, 163, 255, 0.3);
+  }
+
+  /* Page container */
+  .page-container {
+    @apply flex-1 flex flex-col min-h-screen bg-cyberBlack cyber-grid;
+  }
+
+  /* Section Heading */
+  .section-heading {
+    @apply text-2xl font-bold text-white tracking-tight;
+  }
+  .section-subheading {
+    @apply text-sm text-gray-400 mt-1;
+  }
+
+  /* Divider */
+  .cyber-divider {
+    @apply w-full h-px bg-gradient-to-r from-transparent via-white/10 to-transparent my-4;
+  }
+
+  /* Message Bubble – Sent */
+  .bubble-sent {
+    @apply max-w-[75%] ml-auto px-4 py-2.5 rounded-2xl rounded-br-sm text-sm text-white;
+    background: linear-gradient(135deg, #0077cc, #00A3FF);
+  }
+
+  /* Message Bubble – Received */
+  .bubble-received {
+    @apply max-w-[75%] mr-auto px-4 py-2.5 rounded-2xl rounded-bl-sm text-sm
+           bg-white/[0.08] text-gray-200 border border-white/10;
+  }
+
+  /* Skeleton Shimmer */
+  .skeleton {
+    @apply rounded-xl bg-white/5 overflow-hidden relative;
+  }
+  .skeleton::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(255, 255, 255, 0.04) 50%,
+      transparent 100%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 1.8s linear infinite;
+  }
+
+  /* Cyber spinner */
+  .cyber-spinner {
+    @apply w-8 h-8 rounded-full border-2 border-white/10 border-t-neonCyan animate-spin;
+  }
+
+  /* Nav item active highlight */
+  .nav-item-active {
+    @apply text-neonCyan;
+  }
+
+  /* Scrollable content with bottom nav padding */
+  .content-with-nav {
+    @apply pb-24;
+  }
+
+  /* Modal Overlay */
+  .modal-overlay {
+    @apply fixed inset-0 z-50 flex items-end sm:items-center justify-center
+           bg-black/70 backdrop-blur-sm animate-fade-in;
+  }
+
+  .modal-panel {
+    @apply glass-card w-full max-w-lg mx-4 max-h-[90dvh] overflow-y-auto
+           animate-slide-up;
+  }
+}
+
+/* ─── Keyframes ───────────────────────────────────────────── */
+@keyframes shimmer {
+  0%   { background-position: -200% 0; }
+  100% { background-position:  200% 0; }
+}
+
+@keyframes pulseCyan {
+  0%, 100% { box-shadow: 0 0 5px rgba(0,163,255,0.3); }
+  50%       { box-shadow: 0 0 20px rgba(0,163,255,0.8), 0 0 40px rgba(0,163,255,0.4); }
+}
+
+@keyframes slideUp {
+  from { transform: translateY(24px); opacity: 0; }
+  to   { transform: translateY(0);    opacity: 1; }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes glowPulse {
+  0%, 100% { opacity: 1; filter: drop-shadow(0 0 10px rgba(0, 163, 255, 0.4)); }
+  50%       { opacity: 0.8; filter: drop-shadow(0 0 25px rgba(0, 163, 255, 0.8)); }
+}
+
+@keyframes logoSpin {
+  0% { transform: scale(0.5) rotate(0deg); opacity: 0; }
+  20% { opacity: 1; }
+  100% { transform: scale(1.2) rotate(3630deg); opacity: 1; }
+}
+
+.animate-logo-spin {
+  animation: logoSpin 2.5s cubic-bezier(0.8, 0, 1, 1) forwards;
+}
+
+/* ─── Range / Select Resets ───────────────────────────────── */
+select.input-cyber {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2300A3FF' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  padding-right: 36px;
+}
+
+textarea.input-cyber {
+  resize: vertical;
+  min-height: 96px;
+}
+
+/* ─── Link Reset ──────────────────────────────────────────── */
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* ─── Intro Animation Utilities ────────────────────────────── */
+@keyframes scanline {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(100vh); }
+}
+
+@keyframes glitch {
+  0% { transform: translate(0); }
+  20% { transform: translate(-2px, 2px); }
+  40% { transform: translate(-2px, -2px); }
+  60% { transform: translate(2px, 2px); }
+  80% { transform: translate(2px, -2px); }
+  100% { transform: translate(0); }
+}
+
+@keyframes slideReveal {
+  0% { transform: scale(1); opacity: 1; filter: blur(0); }
+  100% { transform: scale(1.1); opacity: 0; filter: blur(10px); visibility: hidden; }
+}
+
+@keyframes terminalType {
+  from { width: 0; }
+  to { width: 100%; }
+}
+
+@keyframes blink {
+  50% { opacity: 0; }
+}
+
+.intro-scanline {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100px;
+  background: linear-gradient(to bottom, transparent, rgba(0, 163, 255, 0.2), transparent);
+  pointer-events: none;
+  z-index: 9999;
+  animation: scanline 3s linear infinite;
+}
+
+.animate-glitch {
+  animation: glitch 0.3s cubic-bezier(.25,.46,.45,.94) both infinite;
+}
+
+.animate-intro-exit {
+  animation: slideReveal 0.8s cubic-bezier(0.7, 0, 0.3, 1) forwards;
+}
+
+.terminal-typing {
+  overflow: hidden;
+  white-space: nowrap;
+  border-right: 2px solid var(--neon-cyan);
+  display: inline-block;
+  animation: terminalType 1.5s steps(40, end), blink 0.7s step-end infinite;
+}
+

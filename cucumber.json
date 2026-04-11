@@ -1,0 +1,7 @@
+{
+  "default": {
+    "require": ["tests/steps/**/*.js", "tests/support/**/*.js"],
+    "format": ["progress-bar", "html:tests/reports/report.html"],
+    "paths": ["tests/features/**/*.feature"]
+  }
+}
