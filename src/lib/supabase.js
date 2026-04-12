@@ -64,8 +64,8 @@ export async function getCurrentUser() {
  * @returns {string}       - Public URL of the uploaded file
  */
 export async function uploadFile(bucket, path, file) {
-  const cloudName = 'dfcs8qugv'
-  const uploadPreset = 'portfolio_upload'
+  const cloudName = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME || 'dfcs8qugv'
+  const uploadPreset = import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET || 'portfolio_upload'
 
   const formData = new FormData()
   formData.append('file', file)

@@ -45,12 +45,29 @@ export default function PdfViewer({ url, title, onClose }) {
           </div>
         </div>
 
-        {/* PDF iframe */}
-        <div className="flex-1 bg-gray-900">
+        {/* PDF iframe with Fallback */}
+        <div className="flex-1 bg-gray-900 relative">
+          <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-6 space-y-4">
+             <div className="w-16 h-16 rounded-full bg-white/5 flex items-center justify-center text-gray-500 mb-2">
+                <FileText size={32} />
+             </div>
+             <p className="text-gray-400 text-sm max-w-xs">
+                If the secure preview is blocked by your browser, use the link below to access the payload directly.
+             </p>
+             <a 
+               href={url} 
+               target="_blank" 
+               rel="noreferrer" 
+               className="btn-primary py-2 px-6 bg-neonCyan text-white font-bold text-xs uppercase"
+             >
+               Open Document Manually
+             </a>
+          </div>
+
           <iframe
             src={url}
             title={title || 'PDF Document'}
-            className="w-full h-full border-0"
+            className="w-full h-full border-0 relative z-10 bg-white"
             style={{ minHeight: '100%' }}
           />
         </div>
