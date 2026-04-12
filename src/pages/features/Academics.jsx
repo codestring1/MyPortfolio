@@ -20,6 +20,10 @@ export default function Academics() {
 
   useEffect(() => {
     const fetchAcademics = async () => {
+      if (!user) {
+        setLoading(false)
+        return
+      }
       const { data } = await supabase.from('academics').select('*').eq('user_id', user.id).single()
       if (data) {
         const d = { ...data }
@@ -29,9 +33,9 @@ export default function Academics() {
       setLoading(false)
     }
     
+    fetchAcademics()
+    
     if (user) {
-      fetchAcademics()
-      
       const channel = supabase.channel(`academics_realtime_${user.id}`)
         .on('postgres_changes', { 
            event: '*', 
@@ -49,6 +53,7 @@ export default function Academics() {
 
   const handleSave = async (e) => {
     e.preventDefault()
+    if (!user) return
     setSaving(true)
     setMsg(null)
     

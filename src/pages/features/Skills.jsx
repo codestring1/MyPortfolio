@@ -15,7 +15,10 @@ export default function Skills() {
   const [editingSkill, setEditingSkill] = useState(null)
 
   const fetchSkills = async () => {
-    if (!user) return
+    if (!user) {
+      setLoading(false)
+      return
+    }
     setRefreshing(true)
     const { data, error } = await supabase.from('skills').select('*').eq('user_id', user.id).order('id', { ascending: false })
     if (!error) setSkills(data || [])
@@ -24,9 +27,9 @@ export default function Skills() {
   }
 
   useEffect(() => { 
+    fetchSkills()
+    
     if (user) {
-      fetchSkills()
-      
       const channel = supabase.channel(`skills_realtime_${user.id}`)
         .on('postgres_changes', { 
            event: '*', 

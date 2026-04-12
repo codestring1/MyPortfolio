@@ -17,6 +17,10 @@ export default function Certificates() {
   const [viewingPdf, setViewingPdf] = useState(null)
 
   const fetchCerts = async () => {
+    if (!user) {
+      setLoading(false)
+      return
+    }
     setRefreshing(true)
     const { data, error } = await supabase.from('certificates').select('*').eq('user_id', user.id).order('id', { ascending: false })
     if (!error) setCerts(data || [])
@@ -24,7 +28,7 @@ export default function Certificates() {
     setRefreshing(false)
   }
 
-  useEffect(() => { if (user) fetchCerts() }, [user])
+  useEffect(() => { fetchCerts() }, [user])
 
   const handleDelete = async (id) => {
     if (!window.confirm('Delete credential?')) return

@@ -17,7 +17,10 @@ export default function Resumes() {
   const [viewingPdf, setViewingPdf] = useState(null)
 
   const fetchResumes = async () => {
-    if (!user) return
+    if (!user) {
+      setLoading(false)
+      return
+    }
     setRefreshing(true)
     const { data, error } = await supabase.from('resumes').select('*').eq('user_id', user.id).order('id', { ascending: false })
     if (!error) setResumes(data || [])
@@ -25,9 +28,9 @@ export default function Resumes() {
   }
 
   useEffect(() => { 
+    fetchResumes()
+    
     if (user) {
-      fetchResumes()
-      
       const channel = supabase.channel(`resumes_realtime_${user.id}`)
         .on('postgres_changes', { 
            event: '*', 

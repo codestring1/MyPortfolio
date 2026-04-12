@@ -15,7 +15,10 @@ export default function Projects() {
   const [editingProject, setEditingProject] = useState(null)
 
   const fetchProjects = async () => {
-    if (!user) return
+    if (!user) {
+      setLoading(false)
+      return
+    }
     setRefreshing(true)
     const { data, error } = await supabase.from('projects').select('*').eq('user_id', user.id).order('id', { ascending: false })
     if (!error) setProjects(data || [])
@@ -24,9 +27,9 @@ export default function Projects() {
   }
 
   useEffect(() => { 
+    fetchProjects()
+
     if (user) {
-      fetchProjects()
-      
       const channel = supabase.channel(`projects_realtime_${user.id}`)
         .on('postgres_changes', { 
            event: '*', 

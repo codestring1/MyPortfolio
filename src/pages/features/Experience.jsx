@@ -15,7 +15,10 @@ export default function Experience() {
   const [editingExp, setEditingExp] = useState(null)
 
   const fetchExperience = async () => {
-    if (!user) return
+    if (!user) {
+      setLoading(false)
+      return
+    }
     setRefreshing(true)
     const { data, error } = await supabase.from('experience').select('*').eq('user_id', user.id).order('id', { ascending: false })
     if (!error) setExperiences(data || [])
@@ -24,9 +27,9 @@ export default function Experience() {
   }
 
   useEffect(() => { 
+    fetchExperience()
+
     if (user) {
-      fetchExperience()
-      
       const channel = supabase.channel(`experience_realtime_${user.id}`)
         .on('postgres_changes', { 
            event: '*', 
