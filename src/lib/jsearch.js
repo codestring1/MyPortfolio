@@ -20,6 +20,31 @@ export async function fetchJobs({ what = '', where = '', page = 1 } = {}) {
     
     const url = `https://${RAPID_API_HOST}/search?query=${encodeURIComponent(query)}&page=${page}&num_pages=1`;
     
+    if (!RAPID_API_KEY) {
+      console.warn('[JSearch] Missing VITE_RAPID_API_KEY. Returning demo data.');
+      return {
+        results: [
+          {
+            id: 'demo-1',
+            title: 'Lead Frontend Operative',
+            company: 'Cyberdyne Systems',
+            location: 'Neo-Tokyo',
+            description: 'Building high-performance neural interfaces.',
+            category: 'Full-time'
+          },
+          {
+            id: 'demo-2',
+            title: 'Full Stack Architect',
+            company: 'Orbital Dynamics',
+            location: 'L5 Colony',
+            description: 'Scaling decentralized communication arrays.',
+            category: 'Contract'
+          }
+        ],
+        count: 2
+      };
+    }
+
     const response = await fetch(url, {
       method: 'GET',
       headers: {

@@ -13,10 +13,12 @@ const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || 'https://placeholder.su
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || 'placeholder-anon-key'
 
 
-if (!supabaseUrl || !supabaseAnonKey) {
+const isPlaceholder = supabaseUrl.includes('placeholder.supabase.co')
+
+if (isPlaceholder) {
   console.warn(
-    '[Supabase] Missing VITE_SUPABASE_URL or VITE_SUPABASE_ANON_KEY.\n' +
-    'Create a .env file in the `web/` directory with these values.'
+    '[Supabase] Using PLACEHOLDER credentials. Features like database sync and real-time chat will remain in DEMO MODE.\n' +
+    'To enable live data, add VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY to your .env file or GitHub Secrets.'
   )
 }
 
