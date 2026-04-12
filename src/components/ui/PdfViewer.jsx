@@ -1,4 +1,4 @@
-import { X, ExternalLink, Download } from 'lucide-react'
+import { X, ExternalLink, Download, FileText } from 'lucide-react'
 
 /**
  * Floating PDF Viewer overlay — renders an iframe of the PDF

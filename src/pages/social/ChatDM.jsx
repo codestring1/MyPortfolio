@@ -22,7 +22,10 @@ export default function ChatDM() {
 
   // 2. Load History & Subscribe
   useEffect(() => {
-    if (!user || !userId) return
+    if (!user || !userId) {
+      setLoading(false)
+      return
+    }
 
     const fetchHistory = async () => {
       const { data } = await supabase

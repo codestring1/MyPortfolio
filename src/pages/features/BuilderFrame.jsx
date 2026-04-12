@@ -49,6 +49,10 @@ export default function BuilderFrame() {
   useEffect(() => {
     const handleMessage = async (event) => {
       if (event.data?.type === 'SAVE_CONSTRUCTOR_DATA') {
+        if (!user) {
+           console.warn('Blocked attempt to save constructor state: No authenticated operative detected.')
+           return
+        }
         const constructorPayload = event.data.payload
         console.log('Intercepted save payload, syncing to database...', constructorPayload)
         

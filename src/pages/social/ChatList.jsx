@@ -10,7 +10,10 @@ export default function ChatList() {
   const [loading, setLoading] = useState(true)
 
   const fetchConversations = async () => {
-    if (!user) return
+    if (!user) {
+      setLoading(false)
+      return
+    }
 
     try {
       // 1. Fetch all messages for current user
