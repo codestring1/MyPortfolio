@@ -34,7 +34,7 @@ export default function Signup() {
         navigate('/details')
       } else {
         setShowOtp(true)
-        setMsg('Verification sequence initiated. Check your designated email for the 6-digit code.')
+        setMsg('Verification sequence initiated. Check your email for the 6-digit code.')
       }
     }
   }
@@ -64,11 +64,10 @@ export default function Signup() {
       <div className="w-full max-w-md">
         <div className="text-center mb-10">
           <h1 className="text-3xl font-black text-white text-glow-cyan tracking-tight mb-2">
-            Establish Identity
+            Sign Up
           </h1>
           <p className="text-white/60 font-mono text-xs tracking-[0.2em] uppercase">
-
-            {showOtp ? 'Verification Required' : 'New Operative Registration'}
+            {showOtp ? 'Verification Required' : 'New User Registration'}
           </p>
         </div>
 
@@ -90,19 +89,19 @@ export default function Signup() {
           {!showOtp ? (
             <form onSubmit={handleSignup} className="space-y-6">
               <div>
-                <label className="input-label">Email Designation</label>
+                <label className="input-label">Email Address</label>
                 <input
                   type="email"
                   className="input-cyber placeholder-white/20 focus:border-neonCyan/60 focus:bg-neonCyan/[0.04]"
 
-                  placeholder="operative@domain.com"
+                  placeholder="user@example.com"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
                 />
               </div>
               <div>
-                <label className="input-label">Secure Access Code</label>
+                <label className="input-label">Password</label>
                 <input
                   type="password"
                   className="input-cyber placeholder-white/20 focus:border-neonCyan/60 focus:bg-neonCyan/[0.04]"
@@ -124,7 +123,7 @@ export default function Signup() {
                   <span className="cyber-spinner border-t-black"></span>
                 ) : (
                   <>
-                    <UserPlus size={18} /> GENERATE PROFILE
+                    <UserPlus size={18} /> CREATE ACCOUNT
                   </>
                 )}
               </button>
@@ -152,7 +151,7 @@ export default function Signup() {
                 {loading ? (
                   <span className="cyber-spinner border-t-black"></span>
                 ) : (
-                  'VERIFY IDENTITY'
+                  'VERIFY EMAIL'
                 )}
               </button>
 
@@ -170,9 +169,9 @@ export default function Signup() {
 
         {!showOtp && (
           <p className="text-white/50 text-sm">
-            Already documented?{' '}
+            Already have an account?{' '}
             <Link to="/login" className="text-white font-bold hover:text-neonCyan transition-colors underline underline-offset-4">
-              Initialize Session
+              Login
             </Link>
           </p>
 

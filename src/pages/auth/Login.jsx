@@ -45,7 +45,7 @@ export default function Login() {
             Myportfolio
           </h1>
           <p className="text-white/60 font-mono text-xs tracking-[0.2em] uppercase">
-            System Auth Gateway
+            User Authentication
           </p>
 
         </div>
@@ -62,11 +62,11 @@ export default function Login() {
             )}
 
             <div>
-              <label className="input-label">Email Designation</label>
+              <label className="input-label">Email Address</label>
               <input
                 type="email"
                 className="input-cyber placeholder-white/20"
-                placeholder="operative@domain.com"
+                placeholder="user@example.com"
 
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
@@ -74,7 +74,7 @@ export default function Login() {
               />
             </div>
             <div>
-              <label className="input-label">Access Code</label>
+              <label className="input-label">Password</label>
               <input
                 type="password"
                 className="input-cyber placeholder-white/20"
@@ -103,7 +103,7 @@ export default function Login() {
                 <span className="cyber-spinner w-5 h-5 border-t-black border-black/20"></span>
               ) : (
                 <>
-                  <LogIn size={18} /> INITIALIZE SESSION
+                  <LogIn size={18} /> SIGN IN
                 </>
               )}
             </button>
@@ -111,14 +111,14 @@ export default function Login() {
 
           <div className="relative my-8">
             <div className="absolute inset-0 flex items-center"><div className="w-full border-t border-white/5"></div></div>
-            <div className="relative flex justify-center text-xs uppercase font-mono"><span className="bg-[#050505] px-4 text-gray-500">Or bypass uplink</span></div>
+            <div className="relative flex justify-center text-xs uppercase font-mono"><span className="bg-[#050505] px-4 text-gray-500">Or continue as guest</span></div>
           </div>
 
           <button
             onClick={handleGuestLogin}
             className="w-full py-3 rounded-xl border border-neonCyan/30 text-neonCyan text-xs font-bold uppercase tracking-widest hover:bg-neonCyan/5 transition-all"
           >
-            Enter as Guest Operative
+            Enter as Guest
           </button>
 
         </div>
@@ -127,7 +127,7 @@ export default function Login() {
         <p className="text-center mt-8 text-white/50 text-sm">
           No active profile?{' '}
           <Link to="/signup" className="text-white font-bold hover:text-neonCyan transition-colors underline underline-offset-4">
-            Register Here
+            Create Account
           </Link>
         </p>
 

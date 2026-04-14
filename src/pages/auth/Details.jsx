@@ -41,7 +41,7 @@ export default function Details() {
     setError(null)
 
     try {
-      if (!formData.full_name.trim()) throw new Error("A true Operative name is required.")
+      if (!formData.full_name.trim()) throw new Error("Your full name is required.")
       
       await updateProfile(formData)
       navigate('/')
@@ -57,10 +57,10 @@ export default function Details() {
       <div className="w-full max-w-lg">
         <div className="text-center mb-8">
           <h1 className="text-2xl font-black text-white text-glow-cyan tracking-tight mb-2">
-            Operative Classification
+            Onboarding
           </h1>
           <p className="text-gray-400 font-mono text-xs tracking-widest uppercase">
-            Complete Core Details
+            Complete Your Profile
           </p>
         </div>
 
@@ -73,12 +73,12 @@ export default function Details() {
             )}
 
             <div>
-              <label className="input-label">Public Alias / Legal Name *</label>
+              <label className="input-label">Full Name *</label>
               <input
                 name="full_name"
                 type="text"
                 className="input-cyber"
-                placeholder="Neo / Thomas Anderson"
+                placeholder="John Doe"
                 value={formData.full_name}
                 onChange={handleChange}
                 required
@@ -87,7 +87,7 @@ export default function Details() {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
               <div>
-                <label className="input-label">Comms Line (Phone)</label>
+                <label className="input-label">Phone Number</label>
                 <input
                   name="phone"
                   type="tel"
@@ -112,7 +112,7 @@ export default function Details() {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
               <div>
-                <label className="input-label">GitHub Uplink</label>
+                <label className="input-label">GitHub Link</label>
                 <input
                   name="github_link"
                   type="url"
@@ -123,7 +123,7 @@ export default function Details() {
                 />
               </div>
               <div>
-                <label className="input-label">LinkedIn Grid</label>
+                <label className="input-label">LinkedIn Link</label>
                 <input
                   name="linkedin_link"
                   type="url"
@@ -141,7 +141,7 @@ export default function Details() {
                 disabled={loading}
                 className="btn-primary w-full"
               >
-                {loading ? <span className="cyber-spinner border-t-black" /> : <><Save size={18} /> INITIALIZE RECORD</>}
+                {loading ? <span className="cyber-spinner border-t-black" /> : <><Save size={18} /> SAVE PROFILE</>}
               </button>
             </div>
           </form>

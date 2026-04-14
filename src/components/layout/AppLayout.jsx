@@ -50,7 +50,7 @@ export default function AppLayout() {
              <span className="text-xs mt-1">Portfolio</span>
           </a>
           <a href="/chat" className="text-gray-400 hover:text-neonCyan p-2 flex flex-col items-center">
-             <span className="text-xs mt-1">Comms</span>
+             <span className="text-xs mt-1">Messages</span>
           </a>
           <a href="/settings" className="text-gray-400 hover:text-neonCyan p-2 flex flex-col items-center">
              <span className="text-xs mt-1">Me</span>

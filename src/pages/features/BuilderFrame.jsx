@@ -10,7 +10,7 @@ export default function BuilderFrame() {
   const [syncing, setSyncing] = useState(false)
   const iframeRef = useRef(null)
 
-  // 1. Fetch data to sync into constructor
+  // 1. Fetch data from Supabase and pass it to the iframe 
   const syncPortfolioData = async () => {
     if (!user) return
     setSyncing(true)
@@ -19,91 +19,89 @@ export default function BuilderFrame() {
       const [
         { data: profile },
         { data: projects },
-        { data: skills }
+        { data: skills },
+        { data: academics },
+        { data: experience }
       ] = await Promise.all([
         supabase.from('profiles').select('*').eq('id', user.id).single(),
-        supabase.from('projects').select('*').eq('user_id', user.id),
-        supabase.from('skills').select('*').eq('user_id', user.id)
+        supabase.from('projects').select('*').eq('user_id', user.id).order('id', { ascending: false }),
+        supabase.from('skills').select('*').eq('user_id', user.id),
+        supabase.from('academics').select('*').eq('user_id', user.id).single(),
+        supabase.from('experience').select('*').eq('user_id', user.id).order('id', { ascending: false })
       ])
 
       if (iframeRef.current?.contentWindow) {
+        // Send basic profile identifiers
         iframeRef.current.contentWindow.postMessage({
           type: 'LOAD_DATABASE_PROFILE',
-          profile
+          profile: profile || {}
         }, '*')
 
+        // Sync Portfolio Database items directly into the HTML's editor grid
         iframeRef.current.contentWindow.postMessage({
           type: 'SYNC_PORTFOLIO_DATA',
-          projects,
-          skills
+          projects: projects || [],
+          skills: skills || [],
+          academics: academics || {},
+          experience: experience || []
         }, '*')
       }
     } catch (err) {
-      console.error('Initial sync failed:', err)
+      console.error('Data sync failed:', err)
     } finally {
       setSyncing(false)
     }
   }
 
-  // 2. Listen for saves from the iframe
   useEffect(() => {
-    const handleMessage = async (event) => {
-      if (event.data?.type === 'SAVE_CONSTRUCTOR_DATA') {
-        if (!user) {
-           console.warn('Blocked attempt to save constructor state: No authenticated operative detected.')
-           return
-        }
-        const constructorPayload = event.data.payload
-        console.log('Intercepted save payload, syncing to database...', constructorPayload)
-        
-        // Save to a special 'Constructor Save' entry in resumes table
-        // This ensures the data is backed up to Supabase
-        await supabase.from('resumes').upsert({
-          user_id: user.id,
-          title: 'Constructor Auto-Save',
-          type: 'Constructor State',
-          pdf_url: JSON.stringify(constructorPayload), // Storing JSON in pdf_url column temporarily or until dedicated column exists
-          file_name: 'constructor_v1.json'
-        }, { onConflict: 'user_id,type' }) // Assuming a constraint or just regular upsert
+    // Listens for local saves coming from inside the iframe (if you wish to sync them back up later)
+    const handleMessage = (e) => {
+      if (e.data?.type === 'SAVE_CONSTRUCTOR_DATA') {
+         // Payload is available in e.data.payload
       }
     }
-
     window.addEventListener('message', handleMessage)
     return () => window.removeEventListener('message', handleMessage)
-  }, [user])
+  }, [])
 
   return (
-    <div className="flex flex-col h-screen md:h-[calc(100vh-2rem)] animate-fade-in">
-       <div className="px-6 md:px-10 pt-6 shrink-0 flex justify-between items-end">
-         <PageHeader title="Resume Constructor" subtitle="Compile ATS-optimized PDFs" />
-         <div className="flex gap-2 mb-8">
+    <div className="w-full h-[calc(100vh-70px)] md:h-screen flex flex-col animate-fade-in bg-slate-950">
+       
+       {/* Header Row */}
+       <div className="shrink-0 flex flex-col md:flex-row md:justify-between md:items-start gap-4 px-4 pt-4 md:px-8 md:pt-6 border-b border-white/10">
+         <div className="-mb-4">
+            <PageHeader title="Resume Constructor" subtitle="Compile ATS-optimized PDFs" />
+         </div>
+         
+         <div className="flex gap-2 md:mt-2 mb-4 md:mb-0">
             <button 
               onClick={syncPortfolioData}
               disabled={syncing}
-              className="flex items-center gap-2 px-4 py-2 bg-neonCyan/10 border border-neonCyan/30 text-neonCyan rounded-xl text-xs font-bold hover:bg-neonCyan/20 transition-all uppercase tracking-widest disabled:opacity-50"
+              className="flex items-center gap-2 px-5 py-2.5 bg-blue-500/10 border border-blue-500/30 text-blue-500 rounded-xl text-xs font-bold hover:bg-blue-500/20 transition-all uppercase tracking-widest disabled:opacity-50"
             >
-              {syncing ? <RefreshCw className="w-3 h-3 animate-spin" /> : <Database className="w-3 h-3" />}
-              Sync with Portfolio
+              {syncing ? <RefreshCw className="w-4 h-4 animate-spin" /> : <Database className="w-4 h-4" />}
+              SYNC PORTFOLIO DATA
             </button>
          </div>
        </div>
        
-       <div className="flex-1 w-full relative overflow-hidden rounded-t-3xl border-t border-white/10 bg-white">
+       {/* Embedded HTML App - Made full width/height with no padding */}
+       <div className="flex-1 w-full relative overflow-hidden bg-white">
           {loading && (
-            <div className="absolute inset-0 z-10 flex items-center justify-center bg-cyberBlack">
-              <Loader2 className="w-8 h-8 text-neonCyan animate-spin" />
+            <div className="absolute inset-0 z-10 flex items-center justify-center bg-slate-950">
+              <Loader2 className="w-10 h-10 text-blue-500 animate-spin" />
             </div>
           )}
+          
           <iframe 
              ref={iframeRef}
              src="/resume-builder.html" 
              title="Resume Builder Sandbox"
-             className="w-full h-full border-0"
+             className="w-full h-full border-0 block"
              onLoad={() => {
                 setLoading(false)
                 syncPortfolioData()
              }}
-             style={{ minHeight: '100%' }}
           />
        </div>
     </div>

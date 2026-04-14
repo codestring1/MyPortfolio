@@ -24,7 +24,7 @@ export default function ForgotPassword() {
     if (resetError) {
       setError(resetError.message)
     } else {
-      setMsg('Reset directive transmitted. Await comms over email.')
+      setMsg('Reset link sent. Please check your email for instructions.')
     }
   }
 

@@ -6,8 +6,8 @@ import { createClient } from '@supabase/supabase-js'
  * Replace the placeholder values below with your actual project credentials,
  * or set them as VITE_ environment variables in a .env file at the project root:
  *
- *   VITE_SUPABASE_URL=https://your-project.supabase.co
- *   VITE_SUPABASE_ANON_KEY=your-anon-key
+ * VITE_SUPABASE_URL=https://your-project.supabase.co
+ * VITE_SUPABASE_ANON_KEY=your-anon-key
  */
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || 'https://placeholder.supabase.co'
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || 'placeholder-anon-key'
@@ -57,30 +57,34 @@ export async function getCurrentUser() {
 }
 
 /**
- * Upload a file to Cloudinary instead of Supabase Storage.
- * @param {string} bucket  - (Ignored, keeping param for signature compatibility)
- * @param {string} path    - (Ignored)
+ * Upload a file by converting it to a Base64 String (Matching Android App Logic)
+ * @param {string} bucket  - (Ignored for Base64 logic)
+ * @param {string} path    - File name
  * @param {File}   file    - File object
- * @returns {string}       - Public URL of the uploaded file
+ * @returns {Promise<string>} - Base64 Data URI of the file
  */
 export async function uploadFile(bucket, path, file) {
-  const cloudName = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME || 'dfcs8qugv'
-  const uploadPreset = import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET || 'portfolio_upload'
+  console.log('[Upload] Bypassing external storage. Encoding file to Base64 to match Android app logic...', { fileName: file?.name, fileSize: file?.size })
 
-  const formData = new FormData()
-  formData.append('file', file)
-  formData.append('upload_preset', uploadPreset)
-
-  const response = await fetch(`https://api.cloudinary.com/v1_1/${cloudName}/auto/upload`, {
-    method: 'POST',
-    body: formData
+  // EXACT ANDROID LOGIC MATCH: Convert the file to a Base64 Data URI string.
+  // In the Android app, `uriToBase64Proj` is used to encode files into Base64 strings 
+  // and save them directly to the Supabase database. We replicate that here to 
+  // permanently bypass any "Failed to fetch" or CORS errors from external endpoints.
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader()
+    
+    reader.onload = () => {
+      // reader.result contains the full Data URI (e.g., data:application/pdf;base64,... or data:image/png;base64,...)
+      console.log('[Upload] Base64 encoding complete. String ready for database injection.')
+      resolve(reader.result)
+    }
+    
+    reader.onerror = (error) => {
+      console.error('[Upload] FileReader error:', error)
+      reject(new Error('Failed to encode file to Base64 format.'))
+    }
+    
+    // Read the file as a data URL (Base64)
+    reader.readAsDataURL(file)
   })
-
-  if (!response.ok) {
-    const err = await response.json()
-    throw new Error(err.error?.message || 'Upload failed')
-  }
-
-  const data = await response.json()
-  return data.secure_url
 }

@@ -17,7 +17,7 @@ export default function Sidebar() {
         { name: 'Home', path: '/', icon: Home },
         { name: 'Community', path: '/community', icon: Users },
         { name: 'Jobs Board', path: '/jobs', icon: Briefcase },
-        { name: 'Comms', path: '/chat', icon: MessageSquare },
+        { name: 'Messages', path: '/chat', icon: MessageSquare },
       ]
     },
     {
@@ -38,7 +38,7 @@ export default function Sidebar() {
     <aside className={`w-64 glass-card h-full flex flex-col pt-6 pb-4 border-l-0 border-y-0 rounded-none border-r overflow-y-auto ${theme === 'dark' ? 'border-white/10' : 'border-gray-200'}`}>
       <div className="px-6 mb-8">
         <h2 className={`text-2xl font-black ${theme === 'dark' ? 'text-glow-cyan' : 'text-neonCyan'}`}>Myportfolio</h2>
-        <div className="text-xs font-mono text-neonCyan mt-1 tracking-widest uppercase">System Uplink</div>
+        <div className="text-xs font-mono text-neonCyan mt-1 tracking-widest uppercase">Navigation</div>
       </div>
 
       <div className="flex-1 px-4 space-y-8">
@@ -80,7 +80,7 @@ export default function Sidebar() {
           }`}
         >
           {theme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
-          {theme === 'dark' ? 'Daylight Mode' : 'Cyber Mode'}
+          {theme === 'dark' ? 'Light Mode' : 'Dark Mode'}
         </button>
 
         <Link
@@ -97,14 +97,14 @@ export default function Sidebar() {
             onClick={signOut}
             className="w-full flex items-center gap-3 px-3 py-2 rounded-xl text-sm font-medium text-errorRed hover:bg-errorRed/10 transition-all border border-transparent hover:border-errorRed/20"
           >
-            <LogOut size={18} /> Sever Connection
+            <LogOut size={18} /> Logout
           </button>
         ) : (
           <Link
             to="/login"
             className="w-full flex items-center gap-3 px-3 py-2 rounded-xl text-sm font-medium text-neonCyan hover:bg-neonCyan/10 transition-all border border-transparent hover:border-neonCyan/20"
           >
-            <Zap size={18} /> Establish Uplink
+            <Zap size={18} /> Login
           </Link>
         )}
       </div>
@@ -130,7 +130,7 @@ export default function Sidebar() {
             ?
           </div>
           <div className="overflow-hidden">
-            <div className={`text-sm font-bold truncate ${theme === 'dark' ? 'text-gray-500' : 'text-gray-400'}`}>Guest Operative</div>
+            <div className={`text-sm font-bold truncate ${theme === 'dark' ? 'text-gray-500' : 'text-gray-400'}`}>Guest User</div>
           </div>
         </div>
       )}

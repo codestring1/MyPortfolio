@@ -69,7 +69,7 @@ export default function Settings() {
            <div><label className="input-label">Public Alias</label><input name="full_name" value={formData.full_name} onChange={handleChange} className="input-cyber" required/></div>
            <div className="grid md:grid-cols-2 gap-4">
               <div><label className="input-label">Email (Immutable)</label><input type="email" value={profile?.email || user?.email || ''} className="input-cyber opacity-50 cursor-not-allowed" disabled/></div>
-              <div><label className="input-label">Comms Line</label><input name="phone" value={formData.phone} onChange={handleChange} className="input-cyber" /></div>
+              <div><label className="input-label">Phone Number</label><input name="phone" value={formData.phone} onChange={handleChange} className="input-cyber" /></div>
            </div>
            <div className="grid md:grid-cols-2 gap-4">
               <div><label className="input-label">GitHub</label><input name="github_link" value={formData.github_link} onChange={handleChange} className="input-cyber placeholder:opacity-50" placeholder="https://github.com/..." /></div>

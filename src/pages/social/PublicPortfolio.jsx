@@ -59,15 +59,15 @@ export default function PublicPortfolio() {
   }, [userId, user])
 
   const requestContact = async () => {
-    if (!user) { alert('You must be logged in to request comms.'); return }
+    if (!user) { alert('You must be logged in to request contact info.'); return }
     await supabase.from('contact_requests').insert([
       { requester_id: user.id, target_user_id: userId, status: 'pending' }
     ])
     setContactStatus('pending')
   }
 
-  if (loading) return <div className="min-h-screen bg-cyberBlack flex items-center justify-center"><span className="cyber-spinner w-10 h-10"></span></div>
-  if (!data.profile) return <div className="min-h-screen bg-cyberBlack text-white flex items-center justify-center font-mono">NODE NOT FOUND. URL INVALID OR PURGED.</div>
+  if (loading) return <div className="min-h-screen bg-slate-950 flex items-center justify-center"><span className="cyber-spinner w-10 h-10"></span></div>
+  if (!data.profile) return <div className="min-h-screen bg-slate-950 text-white flex items-center justify-center font-sans uppercase">User profile not found.</div>
 
   const isApproved = contactStatus === 'approved' || contactStatus === 'owner'
   const isPending = contactStatus === 'pending'
@@ -88,12 +88,12 @@ export default function PublicPortfolio() {
              </div>
              <div className="flex-1 text-center md:text-left pt-6 md:pt-0">
                <h1 className="text-4xl text-white font-black text-glow-cyan tracking-tight">{data.profile.full_name}</h1>
-               <div className="text-neonCyan font-mono mt-1 text-sm tracking-widest uppercase">Verified Operative</div>
+               <div className="text-neonCyan font-mono mt-1 text-sm tracking-widest uppercase">Verified User</div>
              </div>
              <div className="flex gap-3">
                {user && user.id !== userId && (
                   <Link to={`/chat/${userId}`} className="btn-primary py-2 px-4 shadow-[0_0_15px_rgba(0,163,255,0.4)]">
-                    <MessageSquare size={16} /> SECURE CHAT
+                    <MessageSquare size={16} /> SEND MESSAGE
                   </Link>
                )}
              </div>
@@ -105,7 +105,7 @@ export default function PublicPortfolio() {
         {/* --- Private Comms Section --- */}
         <section className="glass-card p-6 border-l-4 border-l-neonPurple flex flex-col md:flex-row gap-6 justify-between items-center bg-white/[0.02]">
            <div>
-              <h3 className="text-lg font-bold text-white mb-1 flex items-center gap-2"><FileSearch size={18} className="text-neonPurple"/> Comms & Resumes (Encrypted)</h3>
+              <h3 className="text-lg font-bold text-white mb-1 flex items-center gap-2"><FileSearch size={18} className="text-neonPurple"/> Contact & Resumes</h3>
               <p className="text-gray-400 text-sm">Direct contact details and resumes are classified.</p>
            </div>
            
@@ -120,10 +120,10 @@ export default function PublicPortfolio() {
                 ))}
              </div>
            ) : contactStatus === 'owner' ? (
-             <div className="text-xs text-neonCyan font-mono">You are the owner. Information is exposed to approved nodes only.</div>
+             <div className="text-xs text-neonCyan font-mono">You are the owner. Information is visible to approved users only.</div>
            ) : (
              <button onClick={requestContact} disabled={isPending || contactStatus==='rejected'} className="btn-primary py-2 px-4 shadow-[0_0_15px_rgba(255,42,109,0.3)] bg-transparent border border-errorRed text-errorRed hover:bg-errorRed/10">
-                {isPending ? 'REQUEST PENDING' : contactStatus==='rejected' ? 'ACCESS DENIED' : <><UserPlus size={16}/> REQUEST CLEARANCE</>}
+                {isPending ? 'REQUEST PENDING' : contactStatus==='rejected' ? 'ACCESS DENIED' : <><UserPlus size={16}/> REQUEST CONTACT</>}
              </button>
            )}
         </section>
@@ -136,7 +136,7 @@ export default function PublicPortfolio() {
               {/* Skills */}
               {data.skills.length > 0 && (
                  <div className="glass-card p-6">
-                    <h3 className="text-sm font-mono text-gray-500 tracking-widest uppercase mb-4 flex items-center gap-2 border-b border-white/5 pb-2"><Zap size={14}/> Capabilities</h3>
+                    <h3 className="text-sm font-mono text-gray-500 tracking-widest uppercase mb-4 flex items-center gap-2 border-b border-white/5 pb-2"><Zap size={14}/> Skills</h3>
                     <div className="flex flex-wrap gap-2">
                        {data.skills.map(s => (
                           <span key={s.id} className="badge-cyan">{s.name}</span>
@@ -150,8 +150,8 @@ export default function PublicPortfolio() {
                  <div className="glass-card p-6">
                     <h3 className="text-sm font-mono text-gray-500 tracking-widest uppercase mb-4 border-b border-white/5 pb-2">External Links</h3>
                     <div className="space-y-3">
-                       {data.profile.github_link && <a href={data.profile.github_link} target="_blank" rel="noreferrer" className="flex items-center gap-2 text-gray-300 hover:text-neonCyan text-sm"><ExternalLink size={14}/> GitHub Uplink</a>}
-                       {data.profile.linkedin_link && <a href={data.profile.linkedin_link} target="_blank" rel="noreferrer" className="flex items-center gap-2 text-gray-300 hover:text-neonCyan text-sm"><ExternalLink size={14}/> LinkedIn Grid</a>}
+                       {data.profile.github_link && <a href={data.profile.github_link} target="_blank" rel="noreferrer" className="flex items-center gap-2 text-gray-300 hover:text-neonCyan text-sm"><ExternalLink size={14}/> GitHub Link</a>}
+                       {data.profile.linkedin_link && <a href={data.profile.linkedin_link} target="_blank" rel="noreferrer" className="flex items-center gap-2 text-gray-300 hover:text-neonCyan text-sm"><ExternalLink size={14}/> LinkedIn Link</a>}
                     </div>
                  </div>
               )}
@@ -162,7 +162,7 @@ export default function PublicPortfolio() {
                     <h3 className="text-sm font-mono text-gray-500 tracking-widest uppercase mb-4 border-b border-white/5 pb-2">Highest Education</h3>
                     {data.academic.pg_name && <div className="mb-3"><div className="text-white text-sm font-bold">{data.academic.pg_degree} - {data.academic.pg_branch}</div><div className="text-xs text-gray-400 font-mono mt-1">{data.academic.pg_name} ({data.academic.pg_end})</div></div>}
                     {!data.academic.pg_name && data.academic.grad_name && <div className="mb-3"><div className="text-white text-sm font-bold">{data.academic.grad_degree} - {data.academic.grad_branch}</div><div className="text-xs text-gray-400 font-mono mt-1">{data.academic.grad_name} ({data.academic.grad_end})</div></div>}
-                    <Link to="/academics" className="text-xs text-neonCyan opacity-50 hover:opacity-100">[FULL LOG REDACTED]</Link>
+                    <Link to="/academics" className="text-xs text-neonCyan opacity-50 hover:opacity-100">[View Details]</Link>
                  </div>
               )}
            </div>
@@ -173,7 +173,7 @@ export default function PublicPortfolio() {
                {/* Projects */}
                {data.projects.length > 0 && (
                  <div>
-                    <h3 className="text-xl font-bold text-white mb-4 flex items-center gap-2"><Code2 className="text-matrixGreen" /> Projects & Payloads</h3>
+                    <h3 className="text-xl font-bold text-white mb-4 flex items-center gap-2"><Code2 className="text-matrixGreen" /> Projects & Highlights</h3>
                     <div className="grid sm:grid-cols-2 gap-4">
                        {data.projects.map(p => (
                           <div key={p.id} className="glass-card p-5 hover:border-matrixGreen/30 transition-colors">
@@ -192,7 +192,7 @@ export default function PublicPortfolio() {
                {/* Experience */}
                {data.experience.length > 0 && (
                  <div>
-                    <h3 className="text-xl font-bold text-white mb-4 mt-8 flex items-center gap-2"><Briefcase className="text-cyberYellow" /> Corporate History</h3>
+                    <h3 className="text-xl font-bold text-white mb-4 mt-8 flex items-center gap-2"><Briefcase className="text-cyberYellow" /> Professional History</h3>
                     <div className="space-y-4">
                        {data.experience.map(e => (
                           <div key={e.id} className="glass-card p-5 border-l-2 border-l-cyberYellow/50">

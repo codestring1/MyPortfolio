@@ -63,7 +63,7 @@ export default function ResumeModal({ isOpen, onClose, initialData, onSave }) {
     <form onSubmit={handleSubmit} className="space-y-4">
       {error && <div className="p-3 bg-errorRed/10 border border-errorRed/30 text-errorRed text-sm rounded-lg">{error}</div>}
       
-      <div><label className="input-label">Archive Title</label><input name="title" value={formData.title} onChange={handleChange} className="input-cyber" required placeholder="Frontend Developer 2026" /></div>
+      <div><label className="input-label">Document Title</label><input name="title" value={formData.title} onChange={handleChange} className="input-cyber" required placeholder="e.g. Senior Frontend Resume" /></div>
       <div>
         <label className="input-label">Classification</label>
         <select name="type" value={formData.type} onChange={handleChange} className="input-cyber" required>
@@ -76,12 +76,12 @@ export default function ResumeModal({ isOpen, onClose, initialData, onSave }) {
       <div>
          <label className="input-label">Target File (PDF)</label>
          <div className="flex items-center justify-between w-full">
-            {formData.pdf_url && !file && (<a href={formData.pdf_url} target="_blank" rel="noreferrer" className="text-xs text-matrixGreen underline">Current File Payload</a>)}
-            <label className="flex items-center gap-2 px-4 py-2 border border-white/20 rounded-xl cursor-pointer hover:bg-white/5 transition-colors text-sm text-gray-300"><UploadCloud size={16} /> {file ? file.name : "Select Payload"}<input type="file" onChange={handleFileChange} className="hidden" accept="application/pdf" /></label>
+            {formData.pdf_url && !file && (<a href={formData.pdf_url} target="_blank" rel="noreferrer" className="text-xs text-blue-400 underline italic">Current File View</a>)}
+            <label className="flex items-center gap-2 px-4 py-2 border border-white/20 rounded-xl cursor-pointer hover:bg-white/5 transition-colors text-sm text-gray-300"><UploadCloud size={16} /> {file ? file.name : "Select Document"}<input type="file" onChange={handleFileChange} className="hidden" accept="application/pdf" /></label>
          </div>
       </div>
 
-      <div className="pt-4 flex justify-end gap-3"><button type="button" onClick={onClose} className="btn-ghost">CANCEL</button><button type="submit" disabled={loading} className="btn-primary" style={{backgroundColor: '#FFE500', color: '#000'}}>{loading ? <span className="cyber-spinner border-t-black w-4 h-4"></span> : "ARCHIVE FILE"}</button></div>
+      <div className="pt-4 flex justify-end gap-3"><button type="button" onClick={onClose} className="btn-ghost">CANCEL</button><button type="submit" disabled={loading} className="btn-primary">{loading ? <span className="cyber-spinner w-4 h-4"></span> : "SAVE DOCUMENT"}</button></div>
     </form>
   )
 }
