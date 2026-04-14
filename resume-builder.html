@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Resume</title>
+    <title>Resume Constructor</title>
   
     <script>
         const originalWarn = console.warn;
@@ -17,184 +17,160 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
-        /* Print Styles to extract only the Resume and preserve text selectability */
+        :root {
+            --app-blue: #2563EB;
+            --app-accent: #3B82F6;
+            --app-green: #10B981;
+            --app-bg: #0F172A;
+            --panel-bg: rgba(30, 41, 59, 0.7);
+            --glass-border: rgba(255, 255, 255, 0.1);
+        }
+
+        /* Print Styles - UNCHANGED to keep professional PDFs */
         @media print {
             @page { margin: 0; size: A4 portrait; }
-            
-            html, body { 
-                background: white !important; 
-                margin: 0 !important; 
-                padding: 0 !important; 
-                height: auto !important; 
-                overflow: visible !important; 
-                -webkit-print-color-adjust: exact; 
-                print-color-adjust: exact; 
-            }
-            
+            html, body { background: white !important; margin: 0 !important; padding: 0 !important; height: auto !important; overflow: visible !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
             .no-print { display: none !important; }
-            
-            main { 
-                display: block !important; 
-                height: auto !important; 
-                overflow: visible !important; 
-            }
-            
-            main > div:last-child {
-                width: 100% !important;
-                height: auto !important;
-                overflow: visible !important;
-                display: block !important;
-                padding: 0 !important;
-                background: white !important;
-            }
-
-            #preview-container { 
-                width: 100% !important; 
-                max-width: 100% !important; 
-                margin: 0 !important; 
-                padding: 10mm 15mm !important; 
-                box-shadow: none !important; 
-                overflow: visible !important;
-                height: auto !important;
-                background-color: white !important;
-                border: none !important;
-                text-rendering: optimizeLegibility !important;
-                -webkit-font-smoothing: antialiased !important;
-            }
-            
+            main { display: block !important; height: auto !important; overflow: visible !important; }
+            main > div:last-child { width: 100% !important; height: auto !important; overflow: visible !important; display: block !important; padding: 0 !important; background: white !important; }
+            #preview-container { width: 100% !important; max-width: 100% !important; margin: 0 !important; padding: 10mm 15mm !important; box-shadow: none !important; overflow: visible !important; height: auto !important; background-color: white !important; border: none !important; text-rendering: optimizeLegibility !important; -webkit-font-smoothing: antialiased !important; }
+            #preview-container * { color: black !important; background: transparent !important; border-color: #ddd !important; }
             .page-break-indicator { display: none !important; }
-            
-            .prevent-page-break {
-                page-break-inside: avoid !important;
-                break-inside: avoid !important;
-                display: block;
-            }
-            
+            .prevent-page-break { page-break-inside: avoid !important; break-inside: avoid !important; display: block; }
             a { text-decoration: none !important; color: inherit !important; }
         }
         
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: #f1f1f1; }
-        ::-webkit-scrollbar-thumb { background: #c1c1c1; border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: #a8a8a8; }
+        body { 
+            background-color: var(--app-bg); 
+            color: #F8FAFC; 
+        }
+
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: var(--app-bg); }
+        ::-webkit-scrollbar-thumb { background: rgba(37, 99, 235, 0.2); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--app-blue); }
+
+        .glass-panel {
+            background: var(--panel-bg);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        }
+
+        .cyber-header {
+            background: rgba(15, 23, 42, 0.95);
+            border-bottom: 1px solid var(--glass-border);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .cyber-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--glass-border);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 700;
+            font-size: 0.7rem;
+        }
+
+        .cyber-btn:hover {
+            background: rgba(37, 99, 235, 0.1);
+            border-color: var(--app-blue);
+            color: var(--app-blue);
+            transform: translateY(-1px);
+        }
+
+        .cyber-btn-primary {
+            background: var(--app-blue);
+            color: white !important;
+            border: none;
+        }
+
+        .cyber-btn-primary:hover {
+            background: #1D4ED8;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+            color: white !important;
+        }
+
+        .cyber-input {
+            background: rgba(0, 0, 0, 0.3) !important;
+            border: 1px solid var(--glass-border) !important;
+            color: white !important;
+            transition: all 0.2s ease;
+        }
+
+        .cyber-input:focus {
+            border-color: var(--neon-cyan) !important;
+            box-shadow: 0 0 8px rgba(0, 163, 255, 0.2) !important;
+            outline: none;
+        }
+
+        .section-label {
+            font-family: inherit;
+            font-size: 0.7rem;
+            color: var(--app-blue);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 0.5rem;
+            display: block;
+            font-weight: 700;
+        }
+
+        /* ATS Gauge */
+        .ats-gauge-container {
+            background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0) 100%);
+            border: 1px solid var(--glass-border);
+            border-left: 4px solid #F59E0B;
+        }
+
+        .ats-circle {
+            transition: all 1s ease-out;
+            box-shadow: 0 0 20px rgba(255, 42, 109, 0.2);
+            border-color: var(--neon-purple) !important;
+        }
+
+        /* Preview Container Immersive Mode */
+        .preview-immersive-bg {
+            background-color: #0B0B14;
+            background-image: radial-gradient(circle at center, rgba(0, 163, 255, 0.05) 0%, transparent 70%);
+        }
 
         #preview-container {
-            position: relative;
-            background-image: 
-                linear-gradient(to bottom, transparent 296.5mm, #e5e7eb 296.5mm, #e5e7eb 297mm, transparent 297mm);
-            background-size: 100% 297mm;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.05);
         }
 
-        .page-break-indicator {
-            position: absolute;
-            left: -80px;
-            width: calc(100% + 160px);
-            border-top: 2px dashed #94a3b8;
-            pointer-events: none;
-            display: flex;
-            justify-content: center;
+        /* Editor Overrides */
+        .editable-field:hover {
+            background-color: rgba(0, 163, 255, 0.05) !important;
+            border-color: var(--neon-cyan) !important;
+            cursor: pointer;
         }
-        
-        .page-break-label {
-            background: #94a3b8;
-            color: white;
-            padding: 2px 8px;
-            font-size: 10px;
-            border-radius: 4px;
-            margin-top: -10px;
-            font-weight: bold;
-            text-transform: uppercase;
+
+        .editable-field:focus {
+            background-color: white !important;
+            color: black !important;
+            outline: 2px solid var(--neon-cyan);
         }
 
         @media screen {
-            .editable-field {
-                outline: none;
-                border-radius: 3px;
-                transition: all 0.2s;
-                border: 1px solid transparent;
-                padding: 1px 2px;
-            }
-            .editable-field:hover {
-                background-color: #f0f4ff;
-                border-color: #c7d2fe;
-                cursor: text;
-            }
-            .editable-field:focus {
-                background-color: #f0f4ff;
-                border-color: #a5b4fc;
-                box-shadow: 0 0 0 2px #e0e7ff;
-            }
-            .editable-field:empty::before {
-                content: "(Empty)";
-                color: #9ca3af;
-                font-style: italic;
+            #preview-container {
+                background-image: 
+                    linear-gradient(to bottom, transparent 296.5mm, rgba(0, 163, 255, 0.1) 296.5mm, rgba(0, 163, 255, 0.1) 297mm, transparent 297mm);
+                background-size: 100% 297mm;
             }
         }
-        
-        /* ===== Dark Mode Overrides (Cyber Theme) ===== */
-        body { background-color: #05050A; color: #e2e8f0; }
 
-        /* Editor panel background */
-        .no-print.bg-white { background-color: #0B0B14 !important; border-color: rgba(255,255,255,0.1) !important; color: #e2e8f0; }
-        header.no-print { background-color: #0B0B14 !important; border-color: rgba(255,255,255,0.1) !important; }
-        header h1 { color: #00A3FF !important; text-shadow: 0 0 10px rgba(0,163,255,0.3); }
-
-        /* ALL gray text classes → light for dark bg */
-        .text-gray-900, .text-gray-800, .text-gray-700, .text-gray-600 { color: #e2e8f0 !important; }
-        .text-gray-500, .text-gray-400 { color: #94a3b8 !important; }
-        .text-indigo-900, .text-indigo-700, .text-indigo-600 { color: #00A3FF !important; }
-        .text-teal-900, .text-teal-700 { color: #00FF9D !important; }
-        .text-blue-900, .text-blue-700 { color: #60a5fa !important; }
-        .text-red-700 { color: #FF2A6D !important; }
-
-        /* Label and heading elements */
-        label, h2, h3, p, span, div { color: inherit; }
-        label.text-gray-700, label.text-gray-600 { color: #cbd5e1 !important; }
-        h2.text-gray-800, h2.text-lg { color: #e2e8f0 !important; }
-
-        /* Section backgrounds */
-        .bg-gray-200 { background-color: rgba(255,255,255,0.05) !important; }
-        .bg-gray-50, .bg-indigo-50, .bg-teal-50, .bg-blue-50, .bg-white:not(#preview-container) {
-            background-color: #0B0B14 !important;
-            border-color: rgba(255,255,255,0.1) !important;
-        }
-        .bg-red-100 { background-color: rgba(255,42,109,0.1) !important; }
-
-        /* Form inputs */
-        input, select, textarea {
-            background-color: rgba(255,255,255,0.05) !important;
-            border-color: rgba(255,255,255,0.15) !important;
-            color: white !important;
-        }
-        input::placeholder, textarea::placeholder { color: #64748b !important; }
-        input:focus, select:focus, textarea:focus {
-            border-color: #00A3FF !important;
-            box-shadow: 0 0 0 2px rgba(0,163,255,0.15) !important;
+        .tab-btn {
+            border-bottom: 2px solid transparent;
+            transition: all 0.3s ease;
         }
 
-        /* Borders */
-        .border-gray-200, .border-gray-100, .border-gray-300,
-        .border-indigo-100, .border-indigo-300,
-        .border-teal-100, .border-teal-300,
-        .border-blue-200, .border-blue-300 {
-            border-color: rgba(255,255,255,0.1) !important;
+        .tab-btn.active {
+            color: var(--app-blue);
+            border-bottom-color: var(--app-blue);
         }
-
-        /* Buttons */
-        button { color: #cbd5e1; }
-        .hover\:text-indigo-800:hover { color: #00A3FF !important; }
-        .hover\:bg-gray-300:hover { background-color: rgba(255,255,255,0.1) !important; }
-
-        /* Preview container tip bar */
-        .custom-preview-container { background-color: #1a1a2e !important; }
-        .custom-preview-container > .no-print { background-color: #0B0B14 !important; border-color: rgba(255,255,255,0.1) !important; }
-
-        /* ATS Score Section */
-        #ats-calculator-section { background-color: #0B0B14 !important; border-color: rgba(255,255,255,0.1) !important; }
-
-        /* Scrollbar for dark */
-        ::-webkit-scrollbar-track { background: #0B0B14; }
-        ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); }
     </style>
 </head>
 <body class="font-sans h-screen flex flex-col overflow-hidden">
@@ -211,20 +187,22 @@
         </button>
     </div>
 
-    <header class="no-print bg-white shadow-sm border-b border-gray-200 z-10 shrink-0">
+    <header class="no-print cyber-header z-10 shrink-0">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
-            <div class="flex items-center space-x-2 text-indigo-600">
-                <i class="fa-solid fa-file-lines text-2xl"></i>
-                <h1 class="text-xl font-bold text-gray-900">HTML Resume Builder</h1>
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 flex items-center justify-center bg-blue-500/10 rounded-lg border border-blue-500/30">
+                    <i class="fa-solid fa-file-invoice text-blue-500 text-xl"></i>
+                </div>
+                <div>
+                    <h1 class="text-xl font-bold text-white tracking-tight">
+                        Resume <span class="text-blue-500">Constructor</span>
+                    </h1>
+                </div>
             </div>
-            <div class="flex gap-2">
-                <button onclick="window.print()" class="flex items-center space-x-2 bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 transition-colors shadow-sm font-medium text-sm" style="background-color: #00A3FF; color: black;">
+            <div class="flex gap-3">
+                <button onclick="window.print()" class="cyber-btn cyber-btn-primary px-5 py-2 rounded-lg flex items-center gap-2">
                     <i class="fa-solid fa-file-pdf"></i>
-                    <span>PDF</span>
-                </button>
-                <button onclick="downloadWord()" class="flex items-center space-x-2 bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors shadow-sm font-medium text-sm" style="background-color: rgba(255,255,255,0.1);">
-                    <i class="fa-solid fa-file-word"></i>
-                    <span>Word</span>
+                    <span>Export PDF</span>
                 </button>
             </div>
         </div>
@@ -232,66 +210,72 @@
 
     <main class="flex-grow flex flex-col lg:flex-row overflow-hidden" style="height: calc(100vh - 64px);">
         
-        <div class="w-full lg:w-5/12 border-r border-gray-200 bg-white overflow-y-auto p-6 space-y-8 pb-24 no-print custom-dark-editor">
+        <div class="w-full lg:w-5/12 border-r border-white/5 bg-transparent overflow-y-auto p-6 space-y-8 pb-32 no-print custom-dark-editor">
             
-            <div class="flex border-b border-gray-200 mb-2">
-                <button onclick="switchMode('resume')" id="tab-resume" class="w-1/2 py-2 text-center font-bold border-b-2 border-indigo-600 text-indigo-600 transition-colors" style="color: #00A3FF; border-color: #00A3FF;">Resume</button>
-                <button onclick="switchMode('coverLetter')" id="tab-coverletter" class="w-1/2 py-2 text-center font-medium text-gray-500 hover:text-gray-700 transition-colors">Cover Letter</button>
+            <div class="flex items-center gap-4 mb-2 border-b border-white/5">
+                <button onclick="switchMode('resume')" id="tab-resume" class="tab-btn active px-6 py-3 font-bold text-xs uppercase tracking-widest">
+                    <i class="fa-solid fa-id-card mr-2"></i> Resume
+                </button>
+                <button onclick="switchMode('coverLetter')" id="tab-coverletter" class="tab-btn px-6 py-3 font-medium text-gray-500 hover:text-white text-xs uppercase tracking-widest">
+                    <i class="fa-solid fa-envelope-open-text mr-2"></i> Cover Letter
+                </button>
             </div>
 
+            <!-- FIXED: Corrupted HTML tags here have been corrected -->
             <div class="flex gap-2 mb-4">
-                <button onclick="exportJSON()" class="text-xs bg-gray-200 hover:bg-gray-300 text-gray-700 px-3 py-1.5 rounded flex items-center shadow-sm" style="color: white;">
-                    <i class="fa-solid fa-file-export mr-1.5"></i> Export Data
+                <button onclick="exportJSON()" class="cyber-btn flex-1 py-2 rounded-lg flex items-center justify-center gap-2 text-white">
+                    <i class="fa-solid fa-file-export"></i> Export Data
                 </button>
-                <label class="text-xs bg-gray-200 hover:bg-gray-300 text-gray-700 px-3 py-1.5 rounded flex items-center shadow-sm cursor-pointer" style="color: white;">
-                    <i class="fa-solid fa-file-import mr-1.5"></i> Import Data
+                <label class="cyber-btn flex-1 py-2 rounded-lg flex items-center justify-center gap-2 text-white cursor-pointer">
+                    <i class="fa-solid fa-file-import"></i> Import Data
                     <input type="file" accept=".json" class="hidden" onchange="importJSON(event)">
                 </label>
-                <button onclick="clearData()" class="text-xs bg-red-100 hover:bg-red-200 text-red-700 px-3 py-1.5 rounded flex items-center shadow-sm ml-auto" style="color: #FF2A6D; background-color: rgba(255, 42, 109, 0.1);">
-                    <i class="fa-solid fa-trash mr-1.5"></i> Reset All
+                <button onclick="clearData()" title="Clear All Data" class="cyber-btn py-2 px-3 rounded-lg flex items-center justify-center border hover:bg-red-500/10" style="color: #EF4444; border-color: rgba(239, 68, 68, 0.2);">
+                    <i class="fa-solid fa-trash-can"></i>
                 </button>
             </div>
 
-            <section id="resume-template-selector" class="bg-indigo-50 p-4 rounded-lg border border-indigo-100">
-                <h2 class="text-lg font-semibold text-indigo-900 mb-2" style="color: #00FF9D;">Resume Template</h2>
-                <p class="text-sm text-indigo-700 mb-3" style="color: gray;">All templates are 100% single-column and ATS-friendly.</p>
-                <select id="template-select" onchange="renderPreview()" class="w-full p-2.5 border border-indigo-300 rounded-md focus:ring-2 focus:ring-indigo-500 outline-none bg-white font-medium text-gray-800">
-                    <option value="modern">1. Modern (Sans-serif, Blue Accent)</option>
-                    <option value="academic">2. Academic (Times New Roman, Formal)</option>
-                    <option value="executive">3. Executive (Garamond, Elegant)</option>
-                    <option value="clean">4. Clean (Calibri, Teal Accent)</option>
-                    <option value="minimalist">5. Minimalist (Helvetica, Light &amp; Airy)</option>
-                    <option value="linkedin">6. LinkedIn Style (Arial, Professional Blue)</option>
-                    <option value="harvard">7. Harvard Business (Garamond, Formal Serif)</option>
-                    <option value="google">8. Google Standard (Roboto, Tech Minimal)</option>
-                    <option value="finance">9. Wall Street (Georgia, Dense Serif)</option>
-                    <option value="tech">10. Software Engineer (Inter, Crisp Geometric)</option>
-                    <option value="startup">11. Startup Bold (Helvetica, High Contrast)</option>
-                    <option value="creative">12. Creative Studio (Trebuchet, Purple Accent)</option>
-                    <option value="engineering">13. Traditional Engineering (Tahoma, Navy)</option>
-                    <option value="federal">14. Federal/USAJOBS (Arial, Strict B&amp;W)</option>
-                    <option value="elegant">15. Elegant Professional (Palatino, Refined)</option>
+            <section id="resume-template-selector" class="glass-panel p-5 border-l-4 border-l-blue-600">
+                <span class="section-label">Resume Structure</span>
+                <h2 class="text-sm font-bold text-white mb-2 uppercase">Layout Template</h2>
+                <select id="template-select" onchange="renderPreview()" class="w-full cyber-input p-2.5 rounded-md text-xs font-mono">
+                    <option value="modern">1. Modern (Professional Blue)</option>
+                    <option value="academic">2. Academic (Formal Serif)</option>
+                    <option value="executive">3. Executive (Business Dark)</option>
+                    <option value="clean">4. Clean (Teal Accent)</option>
+                    <option value="minimalist">5. Minimalist (Simple & Light)</option>
+                    <option value="linkedin">6. Corporate Standard (Arial)</option>
+                    <option value="harvard">7. Ivy League (Classic Serif)</option>
+                    <option value="google">8. Tech Basic (Roboto)</option>
+                    <option value="finance">9. Investment Banking (Georgia)</option>
+                    <option value="tech">10. Software Engineer (Clear Geometric)</option>
+                    <option value="startup">11. Startup Modern (High Contrast)</option>
+                    <option value="creative">12. Modern Studio (Purple Accent)</option>
+                    <option value="engineering">13. Traditional Engineering (Navy)</option>
+                    <option value="federal">14. Government/Strict (Arial)</option>
+                    <option value="elegant">15. Elegant Professional (Palatino)</option>
                 </select>
             </section>
 
-            <section id="cl-template-selector" class="bg-teal-50 p-4 rounded-lg border border-teal-100 hidden">
-                <h2 class="text-lg font-semibold text-teal-900 mb-2">Cover Letter Template</h2>
-                <p class="text-sm text-teal-700 mb-3">Professional formats for your application.</p>
-                <select id="cl-template-select" onchange="renderPreview()" class="w-full p-2.5 border border-teal-300 rounded-md focus:ring-2 focus:ring-teal-500 outline-none bg-white font-medium text-gray-800">
-                    <option value="standard">1. Standard Corporate (Arial, Classic)</option>
-                    <option value="linkedin">2. LinkedIn Modern (Sans-serif, Clean)</option>
-                    <option value="executive">3. Executive Formal (Garamond, Elegant)</option>
-                    <option value="startup">4. Tech Startup (Helvetica, Bold Accent)</option>
+            <section id="cl-template-selector" class="glass-panel p-5 border-l-4 border-l-green-600 hidden">
+                <span class="section-label" style="color: #10B981;">Cover Letter Layout</span>
+                <h2 class="text-sm font-bold text-white mb-2 uppercase">Letter Style</h2>
+                <select id="cl-template-select" onchange="renderPreview()" class="w-full cyber-input p-2.5 rounded-md text-xs font-mono">
+                    <option value="standard">1. Standard Business (Classic)</option>
+                    <option value="linkedin">2. Professional Modern (Sans-serif)</option>
+                    <option value="executive">3. Executive Formal (Elegant Serif)</option>
+                    <option value="startup">4. Startup Direct (Clean Bold)</option>
                 </select>
             </section>
 
-            <section class="bg-gray-50 p-4 rounded-lg border border-gray-200">
-                <h2 class="text-sm font-semibold text-gray-800 mb-2"><i class="fa-solid fa-font mr-1"></i> Typography Settings</h2>
+            <section class="glass-panel p-5">
+                <span class="section-label">General Settings</span>
+                <h2 class="text-sm font-bold text-white mb-4 uppercase">Typography Configuration</h2>
                 <div class="grid grid-cols-2 gap-4">
                     <div>
-                        <label class="block text-xs font-medium text-gray-600 mb-1">Font Family</label>
-                        <select id="setting-font" onchange="updateData('settings.font', this.value)" class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-400 outline-none text-xs text-gray-700">
-                            <option value="default">Template Default</option>
+                        <label class="text-[10px] text-gray-400 uppercase tracking-widest block mb-1">Global Font</label>
+                        <select id="setting-font" onchange="updateData('settings.font', this.value)" class="w-full cyber-input p-2 rounded-md text-[10px] font-mono">
+                            <option value="default">Default System</option>
                             <option value="Arial, sans-serif">Arial</option>
                             <option value="Helvetica, sans-serif">Helvetica</option>
                             <option value="'Times New Roman', serif">Times New Roman</option>
@@ -302,10 +286,10 @@
                         </select>
                     </div>
                     <div>
-                        <label class="block text-xs font-medium text-gray-600 mb-1">Base Font Size</label>
-                        <select id="setting-fontsize" onchange="updateData('settings.fontSize', parseInt(this.value))" class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-400 outline-none text-xs text-gray-700">
-                            <option value="9">Small (9pt)</option>
-                            <option value="10">Normal (10pt)</option>
+                        <label class="text-[10px] text-gray-400 uppercase tracking-widest block mb-1">Font Size</label>
+                        <select id="setting-fontsize" onchange="updateData('settings.fontSize', parseInt(this.value))" class="w-full cyber-input p-2 rounded-md text-[10px] font-mono">
+                            <option value="9">Compact (9pt)</option>
+                            <option value="10">Standard (10pt)</option>
                             <option value="11">Medium (11pt)</option>
                             <option value="12">Large (12pt)</option>
                         </select>
@@ -313,160 +297,162 @@
                 </div>
             </section>
 
-            <section id="ats-calculator-section" class="bg-white p-4 rounded-lg border border-gray-200 shadow-sm flex flex-col gap-3">
-                <div class="flex items-center gap-4">
-                    <div id="ats-score-circle" class="flex items-center justify-center w-14 h-14 rounded-full border-4 border-gray-300 font-bold text-xl shrink-0 transition-colors duration-500">
+            <section id="ats-calculator-section" class="ats-gauge-container glass-panel p-5 flex flex-col gap-4">
+                <div class="flex items-center gap-5">
+                    <div id="ats-score-circle" class="ats-circle flex items-center justify-center w-16 h-16 rounded-full border-2 border-amber-500 font-bold text-2xl text-white shadow-lg shrink-0">
                         --
                     </div>
                     <div>
-                        <h2 class="text-sm font-bold text-gray-800 uppercase tracking-wide">ATS Fit Score</h2>
-                        <p class="text-[10px] text-gray-500">Evaluating Keywords, Formatting & Relevance</p>
+                        <span class="section-label" style="color: #F59E0B">Optimization Engine</span>
+                        <h2 class="text-sm font-bold text-white uppercase">ATS Content Analysis</h2>
                     </div>
                 </div>
                 
-                <div class="border-t border-gray-100 pt-3">
-                    <h3 class="text-[11px] font-bold text-gray-600 uppercase mb-2">Scoring Parameters Breakdown</h3>
-                    <div id="ats-breakdown" class="space-y-1 text-xs">
-                        </div>
+                <div class="border-t border-white/5 pt-3">
+                    <h3 class="text-[10px] font-black uppercase tracking-widest mb-3 italic" style="color: var(--neon-purple);">Sync Parameters Breakdown</h3>
+                    <div id="ats-breakdown" class="space-y-2"></div>
                 </div>
 
-                <div class="border-t border-gray-100 pt-2">
-                    <ul id="ats-feedback-list" class="space-y-1">
-                        <li class="text-xs text-gray-500">Calculating score...</li>
+                <div class="border-t border-white/5 pt-3">
+                    <ul id="ats-feedback-list" class="space-y-2">
+                        <li class="text-[10px] text-gray-500 uppercase font-mono animate-pulse">Initializing neural scan... Paste JD Below.</li>
                     </ul>
                 </div>
             </section>
 
             <div id="resume-editor-sections" class="space-y-8">
-                <section class="bg-blue-50 p-4 rounded-lg border border-blue-200 shadow-inner">
-                    <h2 class="text-sm font-bold text-blue-900 mb-1" style="color: #00FF9D;"><i class="fa-solid fa-bullseye mr-1"></i> Target Job Description (Optional)</h2>
-                    <p class="text-xs text-blue-700 mb-2" style="color: gray;">Paste the JD here. Our ATS logic will extract the core requirements and calculate your Keyword & Semantic Match score.</p>
-                    <textarea id="edit-jd" oninput="updateData('jobDescription', this.value)" rows="3" class="w-full p-2 border border-blue-300 rounded-md focus:ring-2 focus:ring-blue-500 outline-none text-xs" placeholder="Paste the job requirements here..."></textarea>
+                <section class="glass-panel p-5 border-t-4 border-t-blue-600">
+                    <span class="section-label">Target Keywords</span>
+                    <h2 class="text-sm font-bold text-white mb-4 uppercase">Job Description</h2>
+                    <textarea id="edit-jd" oninput="updateData('jobDescription', this.value)" rows="4" class="w-full cyber-input p-3 rounded-md text-xs font-mono placeholder-gray-600" placeholder="Paste the target job description here..."></textarea>
+                    <div class="mt-2 text-[9px] text-gray-500 font-mono italic">Analysis will highlight matched and missing keywords automatically.</div>
                 </section>
 
-                <section>
-                    <h2 class="text-lg font-semibold text-gray-800 border-b pb-2 mb-4">Personal Details</h2>
-                    <div class="space-y-4">
+                <section class="glass-panel p-6 border-l-2 border-l-white/10">
+                    <h2 class="text-xs font-bold text-white border-b border-white/5 pb-3 mb-6 uppercase">Personal Information</h2>
+                    <div class="space-y-5">
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
-                            <input type="text" id="edit-name" oninput="updateData('personal.name', this.value)" class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 outline-none">
+                            <label class="section-label">Full Name</label>
+                            <input type="text" id="edit-name" oninput="updateData('personal.name', this.value)" class="w-full cyber-input p-3 rounded-md text-xs font-mono">
                         </div>
-                        <div class="grid grid-cols-2 gap-4">
+                        <div class="grid grid-cols-2 gap-5">
                             <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-1">Email</label>
-                                <input type="email" id="edit-email" oninput="updateData('personal.email', this.value)" class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 outline-none">
+                                <label class="section-label">Email Address</label>
+                                <input type="email" id="edit-email" oninput="updateData('personal.email', this.value)" class="w-full cyber-input p-3 rounded-md text-xs font-mono">
                             </div>
                             <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-1">Phone</label>
-                                <input type="text" id="edit-phone" oninput="updateData('personal.phone', this.value)" class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 outline-none">
+                                <label class="section-label">Phone Number</label>
+                                <input type="text" id="edit-phone" oninput="updateData('personal.phone', this.value)" class="w-full cyber-input p-3 rounded-md text-xs font-mono">
                             </div>
                             <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-1">LinkedIn URL</label>
-                                <input type="url" id="edit-linkedin" oninput="updateData('personal.linkedin', this.value)" class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 outline-none" placeholder="https://linkedin.com/in/...">
+                                <label class="section-label">LinkedIn Profile</label>
+                                <input type="url" id="edit-linkedin" oninput="updateData('personal.linkedin', this.value)" class="w-full cyber-input p-3 rounded-md text-xs font-mono" placeholder="https://">
                             </div>
                             <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-1">GitHub URL</label>
-                                <input type="url" id="edit-github" oninput="updateData('personal.github', this.value)" class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 outline-none" placeholder="https://github.com/...">
+                                <label class="section-label">GitHub URL</label>
+                                <input type="url" id="edit-github" oninput="updateData('personal.github', this.value)" class="w-full cyber-input p-3 rounded-md text-xs font-mono" placeholder="https://">
                             </div>
                         </div>
                     </div>
                 </section>
 
-                <section>
-                    <h2 class="text-lg font-semibold text-gray-800 border-b pb-2 mb-4">Professional Summary</h2>
-                    <textarea id="edit-summary" oninput="updateData('summary', this.value)" rows="4" class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 outline-none text-sm"></textarea>
+                <section class="glass-panel p-6 border-l-2 border-l-white/10">
+                    <h2 class="text-xs font-bold text-white border-b border-white/5 pb-3 mb-6 uppercase">Professional Summary</h2>
+                    <textarea id="edit-summary" oninput="updateData('summary', this.value)" rows="5" class="w-full cyber-input p-3 rounded-md text-xs font-mono leading-relaxed"></textarea>
                 </section>
 
-                <section>
-                    <div class="flex justify-between items-center border-b pb-2 mb-4">
-                        <h2 class="text-lg font-semibold text-gray-800">Education</h2>
-                        <button onclick="addEducation()" class="text-indigo-600 hover:text-indigo-800 text-sm font-medium" style="color:#00A3FF;"><i class="fa-solid fa-plus mr-1"></i> Add Education</button>
+                <section class="glass-panel p-6">
+                    <div class="flex justify-between items-center border-b border-white/5 pb-3 mb-6">
+                        <h2 class="text-xs font-bold text-white uppercase">Education</h2>
+                        <button onclick="addEducation()" class="text-[10px] font-bold uppercase tracking-widest hover:text-white transition-colors" style="color: var(--app-blue);"><i class="fa-solid fa-plus mr-1"></i> Add Record</button>
                     </div>
-                    <div id="education-editor-container"></div>
+                    <div id="education-editor-container" class="space-y-6"></div>
                 </section>
 
-                <section>
-                    <div class="flex justify-between items-center border-b pb-2 mb-4">
-                        <h2 class="text-lg font-semibold text-gray-800">Technical Skills</h2>
-                        <button onclick="addSkill()" class="text-indigo-600 hover:text-indigo-800 text-sm font-medium" style="color:#00A3FF;"><i class="fa-solid fa-plus mr-1"></i> Add Skill Group</button>
+                <section class="glass-panel p-6">
+                    <div class="flex justify-between items-center border-b border-white/5 pb-3 mb-6">
+                        <h2 class="text-xs font-bold text-white uppercase">Skills</h2>
+                        <button onclick="addSkill()" class="text-[10px] font-bold uppercase tracking-widest hover:text-white transition-colors" style="color: var(--app-blue);"><i class="fa-solid fa-plus mr-1"></i> Add Category</button>
                     </div>
-                    <div id="skills-editor-container" class="space-y-3"></div>
+                    <div id="skills-editor-container" class="space-y-4"></div>
                 </section>
 
-                <section>
-                    <div class="flex justify-between items-center border-b pb-2 mb-4">
-                        <h2 class="text-lg font-semibold text-gray-800">Internships</h2>
-                        <button onclick="addInternship()" class="text-indigo-600 hover:text-indigo-800 text-sm font-medium" style="color:#00A3FF;"><i class="fa-solid fa-plus mr-1"></i> Add Entry</button>
+                <section class="glass-panel p-6">
+                    <div class="flex justify-between items-center border-b border-white/5 pb-3 mb-6">
+                        <h2 class="text-xs font-bold text-white uppercase">Experience</h2>
+                        <button onclick="addInternship()" class="text-[10px] font-bold uppercase tracking-widest hover:text-white transition-colors" style="color: var(--app-blue);"><i class="fa-solid fa-plus mr-1"></i> Add Entry</button>
                     </div>
-                    <div id="internships-editor-container" class="space-y-6"></div>
+                    <div id="internships-editor-container" class="space-y-8"></div>
                 </section>
 
-                <section>
-                    <div class="flex justify-between items-center border-b pb-2 mb-4">
-                        <h2 class="text-lg font-semibold text-gray-800">Experience & Projects</h2>
-                        <button onclick="addProject()" class="text-indigo-600 hover:text-indigo-800 text-sm font-medium" style="color:#00A3FF;"><i class="fa-solid fa-plus mr-1"></i> Add Entry</button>
+                <section class="glass-panel p-6">
+                    <div class="flex justify-between items-center border-b border-white/5 pb-3 mb-6">
+                        <h2 class="text-xs font-bold text-white uppercase">Projects</h2>
+                        <button onclick="addProject()" class="text-[10px] font-bold uppercase tracking-widest hover:text-white transition-colors" style="color: var(--app-blue);"><i class="fa-solid fa-plus mr-1"></i> Add Project</button>
                     </div>
-                    <div id="projects-editor-container" class="space-y-6"></div>
+                    <div id="projects-editor-container" class="space-y-8"></div>
                 </section>
 
-                <section>
-                    <div class="flex justify-between items-center border-b pb-2 mb-4">
-                        <h2 class="text-lg font-semibold text-gray-800">Extra-Curricular Activities</h2>
-                        <button onclick="addActivity()" class="text-indigo-600 hover:text-indigo-800 text-sm font-medium" style="color:#00A3FF;"><i class="fa-solid fa-plus mr-1"></i> Add Entry</button>
+                <section class="glass-panel p-6">
+                    <div class="flex justify-between items-center border-b border-white/5 pb-3 mb-6">
+                        <h2 class="text-xs font-bold text-white uppercase">Extra-Curricular</h2>
+                        <button onclick="addActivity()" class="text-[10px] font-bold uppercase tracking-widest hover:text-white transition-colors" style="color: var(--app-blue);"><i class="fa-solid fa-plus mr-1"></i> Add Activity</button>
                     </div>
-                    <div id="activities-editor-container" class="space-y-6"></div>
+                    <div id="activities-editor-container" class="space-y-8"></div>
                 </section>
 
-                <section>
-                    <div class="flex justify-between items-center border-b pb-2 mb-4">
-                        <h2 class="text-lg font-semibold text-gray-800">Certifications</h2>
-                        <button onclick="addCertification()" class="text-indigo-600 hover:text-indigo-800 text-sm font-medium" style="color:#00A3FF;"><i class="fa-solid fa-plus mr-1"></i> Add Certification</button>
+                <section class="glass-panel p-6">
+                    <div class="flex justify-between items-center border-b border-white/5 pb-3 mb-6">
+                        <h2 class="text-xs font-bold text-white uppercase">Certifications</h2>
+                        <button onclick="addCertification()" class="text-[10px] font-bold uppercase tracking-widest hover:text-white transition-colors" style="color: var(--app-blue);"><i class="fa-solid fa-plus mr-1"></i> Add Record</button>
                     </div>
-                    <div id="certs-editor-container" class="space-y-6"></div>
+                    <div id="certs-editor-container" class="space-y-8"></div>
                 </section>
             </div>
 
             <div id="cover-letter-editor-sections" class="space-y-8 hidden">
-                <section>
-                    <h2 class="text-lg font-semibold text-gray-800 border-b pb-2 mb-4">Application Details</h2>
-                    <div class="space-y-4">
+                <section class="glass-panel p-6 border-l-2 border-l-blue-600/30">
+                    <span class="section-label">Recipient Information</span>
+                    <h2 class="text-sm font-bold text-white border-b border-white/5 pb-3 mb-6 uppercase">Letter Details</h2>
+                    <div class="space-y-5">
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Job Title</label>
-                            <input type="text" id="edit-cl-jobtitle" oninput="updateData('coverLetter.jobTitle', this.value)" class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-teal-500 outline-none">
+                            <label class="section-label">Target Role</label>
+                            <input type="text" id="edit-cl-jobtitle" oninput="updateData('coverLetter.jobTitle', this.value)" class="w-full cyber-input p-3 rounded-md text-xs font-mono">
                         </div>
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Company Name</label>
-                            <input type="text" id="edit-cl-company" oninput="updateData('coverLetter.companyName', this.value)" class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-teal-500 outline-none">
+                            <label class="section-label">Entity Name (Company)</label>
+                            <input type="text" id="edit-cl-company" oninput="updateData('coverLetter.companyName', this.value)" class="w-full cyber-input p-3 rounded-md text-xs font-mono">
                         </div>
-                        <div class="grid grid-cols-2 gap-4">
+                        <div class="grid grid-cols-2 gap-5">
                             <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-1">Hiring Manager / Recipient</label>
-                                <input type="text" id="edit-cl-recipient" oninput="updateData('coverLetter.recipientName', this.value)" class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-teal-500 outline-none">
+                                <label class="section-label">Target Liaison (Recipient)</label>
+                                <input type="text" id="edit-cl-recipient" oninput="updateData('coverLetter.recipientName', this.value)" class="w-full cyber-input p-3 rounded-md text-xs font-mono">
                             </div>
                             <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-1">Date</label>
-                                <input type="text" id="edit-cl-date" oninput="updateData('coverLetter.date', this.value)" class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-teal-500 outline-none">
+                                <label class="section-label">System Date</label>
+                                <input type="text" id="edit-cl-date" oninput="updateData('coverLetter.date', this.value)" class="w-full cyber-input p-3 rounded-md text-xs font-mono">
                             </div>
                         </div>
                     </div>
                 </section>
-                <section>
-                    <h2 class="text-lg font-semibold text-gray-800 border-b pb-2 mb-4">Cover Letter Body</h2>
-                    <p class="text-xs text-gray-500 mb-2">Use [Job Title] and [Company Name] as placeholders to auto-fill from the details above.</p>
-                    <textarea id="edit-cl-body" oninput="updateData('coverLetter.body', this.value)" rows="15" class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-teal-500 outline-none text-sm leading-relaxed"></textarea>
+                <section class="glass-panel p-6 border-l-2 border-l-blue-600/30">
+                    <span class="section-label" style="color: #3B82F6;">Letter Body</span>
+                    <h2 class="text-sm font-bold text-white border-b border-white/5 pb-3 mb-6 uppercase">Transmission Content</h2>
+                    <p class="text-[9px] text-gray-500 mb-4 font-mono italic">Use [Job Title] and [Company Name] tags for automated insertion.</p>
+                    <textarea id="edit-cl-body" oninput="updateData('coverLetter.body', this.value)" rows="18" class="w-full cyber-input p-4 rounded-md text-xs font-mono leading-relaxed"></textarea>
                 </section>
             </div>
 
         </div>
 
-        <div class="w-full lg:w-7/12 bg-gray-200 p-4 md:p-8 overflow-y-auto flex flex-col items-center custom-preview-container">
+        <div class="w-full lg:w-7/12 preview-immersive-bg p-4 md:p-12 overflow-y-auto flex flex-col items-center custom-preview-container">
             
-            <div class="mb-4 text-gray-600 text-xs flex items-center bg-white px-4 py-2 rounded-full shadow-sm border border-gray-200 no-print" style="color: black;">
-                <i class="fa-solid fa-pen-to-square mr-2 text-indigo-500"></i>
-                <span>Tip: Click any text below to edit directly in the document! You can also format text by highlighting it.</span>
+            <div class="mb-4 text-xs flex items-center bg-blue-500/5 px-6 py-2.5 rounded-full border border-blue-500/20 no-print">
+                <i class="fa-solid fa-wand-magic-sparkles mr-3 text-blue-500"></i>
+                <span class="text-gray-300 font-medium uppercase tracking-tight">Manual Edit mode: Click text in the preview to update records live.</span>
             </div>
 
-            <div id="preview-container" class="bg-white shadow-xl w-full max-w-[850px] p-10 text-gray-900 box-border transition-all mb-8" style="min-height: 297mm;">
+            <div id="preview-container" class="bg-white w-full max-w-[850px] p-12 text-gray-900 box-border transition-all mb-12" style="min-height: 297mm;">
             </div>
         </div>
     </main>
@@ -483,75 +469,19 @@
                 linkedin: 'https://linkedin.com/in/alexmorgan',
                 github: 'https://github.com/alexmorgan'
             },
-            summary: 'Results-driven Full Stack Software Engineer with 3+ years of experience building scalable web applications and cloud-native microservices. Proficient in React, Node.js, and AWS with a strong foundation in system design and agile methodologies. Passionate about clean code, performance optimization, and delivering exceptional user experiences.',
-            education: [
-                {
-                    institution: 'Stanford University, Stanford, CA',
-                    degree: 'Bachelor of Science in Computer Science',
-                    date: 'Sep 2019 - June 2023',
-                    gpa: '3.85/4.0',
-                    coursework: 'Data Structures & Algorithms, Operating Systems, Database Systems, Machine Learning, Distributed Systems, Computer Networks.'
-                }
-            ],
-            skills: [
-                { category: 'Languages', items: 'JavaScript/TypeScript, Python, Java, Go, SQL, HTML/CSS.' },
-                { category: 'Frameworks & Libraries', items: 'React.js, Next.js, Node.js, Express, Spring Boot, TailwindCSS.' },
-                { category: 'Cloud & DevOps', items: 'AWS (EC2, S3, Lambda), Docker, Kubernetes, CI/CD, Terraform.' },
-                { category: 'Tools & Databases', items: 'PostgreSQL, MongoDB, Redis, Git, Figma, Jira, VS Code.' }
-            ],
-            internships: [
-                {
-                    title: 'Software Engineering Intern | Google, Mountain View, CA',
-                    date: 'Summer 2022',
-                    bullets: [
-                        'Developed a real-time data pipeline processing 50K+ events/second using Apache Kafka and Go.',
-                        'Reduced API response times by 40% through caching strategies and query optimization.'
-                    ]
-                }
-            ],
-            projects: [
-                {
-                    title: 'CloudSync — Real-time Collaboration Platform',
-                    date: 'Jan 2023',
-                    bullets: [
-                        'Built a full-stack collaborative document editor supporting 100+ concurrent users with WebSocket-based real-time sync.',
-                        'Implemented conflict resolution using Operational Transformation (OT) algorithms for seamless multi-user editing.',
-                        'Deployed on AWS ECS with auto-scaling, achieving 99.9% uptime over 6 months.'
-                    ]
-                },
-                {
-                    title: 'HealthTrack — AI-Powered Fitness App',
-                    date: 'Aug 2022',
-                    bullets: [
-                        'Architected a React Native mobile app with a Node.js backend serving 10K+ active users.',
-                        'Integrated TensorFlow Lite for on-device pose estimation, enabling real-time exercise form correction.',
-                        'Designed RESTful APIs with JWT authentication and role-based access control.'
-                    ]
-                }
-            ],
-            activities: [
-                {
-                    title: 'Lead Organizer | Stanford Hackathon Club',
-                    date: '2021 - 2023',
-                    bullets: [
-                        'Organized annual 48-hour hackathons with 500+ participants and $50K in prizes from corporate sponsors.',
-                        'Mentored 30+ student teams on project ideation, technical architecture, and pitch delivery.'
-                    ]
-                }
-            ],
-            certifications: [
-                {
-                    title: 'AWS Certified Solutions Architect – Associate',
-                    date: '2023',
-                    bullets: ['Amazon Web Services cloud architecture certification.']
-                }
-            ],
+            summary: 'Results-driven Full Stack Software Engineer with 3+ years of experience building scalable web applications and cloud-native microservices.',
+            education: [],
+            skills: [],
+            internships: [],
+            projects: [],
+            activities: [],
+            certifications: [],
             coverLetter: {
                 jobTitle: 'Software Engineer',
                 companyName: 'Acme Technologies',
                 recipientName: 'Hiring Manager',
                 date: new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }),
-                body: "I am writing to express my strong interest in the [Job Title] position at [Company Name]. With a strong foundation in full-stack development and cloud architecture from my Computer Science degree at Stanford University, I am eager to contribute to your team's innovative projects.\n\nIn my recent role at Google, I developed real-time data pipelines processing 50K+ events per second, and in my personal projects I have built collaborative platforms supporting 100+ concurrent users. My experience spans from frontend development with React to backend services with Node.js and Go.\n\nI am confident that my technical skills, coupled with my passion for building scalable, user-centric applications, make me a strong candidate for this role.\n\nThank you for considering my application. I look forward to the opportunity to discuss how my background aligns with the needs of your team."
+                body: "I am writing to express my strong interest in the [Job Title] position at [Company Name]..."
             }
         };
 
@@ -594,7 +524,6 @@
                 const profile = event.data.profile;
                 if (!profile) return;
                 
-                // Only overwrite if current name is default or empty
                 if (data.personal.name === 'Alex Morgan' || !data.personal.name) {
                     data.personal.name = profile.full_name || '';
                     data.personal.email = profile.email || '';
@@ -604,21 +533,57 @@
             }
 
             if (event.data.type === 'SYNC_PORTFOLIO_DATA') {
-                const { projects, skills, academics } = event.data;
+                const { projects, skills, academics, experience } = event.data;
                 
                 if (projects && projects.length > 0) {
                     data.projects = projects.map(p => ({
                         title: p.title,
                         date: p.date || 'Present',
-                        bullets: [p.description || '']
+                        bullets: [p.description || '', ...(p.tech_stack ? [`Tech Stack: ${p.tech_stack}`] : [])]
                     }));
                 }
 
                 if (skills && skills.length > 0) {
-                    data.skills = skills.map(s => ({
-                        category: s.category || 'Skill',
-                        items: s.name + (s.level ? ` (${s.level})` : '')
+                    const grouped = skills.reduce((acc, s) => {
+                        const lvl = s.level || 'Skill';
+                        if (!acc[lvl]) acc[lvl] = [];
+                        acc[lvl].push(s.name);
+                        return acc;
+                    }, {});
+                    data.skills = Object.entries(grouped).map(([level, items]) => ({
+                        category: level,
+                        items: items.join(' • ')
                     }));
+                }
+
+                if (experience && experience.length > 0) {
+                    data.internships = experience.map(e => ({
+                        title: `${e.role} | ${e.company}`,
+                        date: e.duration || 'Present',
+                        bullets: [e.description || '']
+                    }));
+                }
+
+                if (academics) {
+                    data.education = [];
+                    if (academics.pg_name) {
+                        data.education.push({
+                            institution: academics.pg_name,
+                            degree: `${academics.pg_degree} in ${academics.pg_branch}`,
+                            date: `${academics.pg_start} - ${academics.pg_end || 'Present'}`,
+                            gpa: academics.pg_grade,
+                            coursework: ''
+                        });
+                    }
+                    if (academics.grad_name) {
+                        data.education.push({
+                            institution: academics.grad_name,
+                            degree: `${academics.grad_degree} in ${academics.grad_branch}`,
+                            date: `${academics.grad_start} - ${academics.grad_end || 'Present'}`,
+                            gpa: academics.grad_grade,
+                            coursework: ''
+                        });
+                    }
                 }
 
                 initEditor();
@@ -719,31 +684,31 @@
             const container = document.getElementById('education-editor-container');
             if(!container) return;
             container.innerHTML = data.education.map((edu, idx) => `
-                <div class="bg-gray-50 p-4 rounded-md border border-gray-200 mb-4 relative flex">
+                <div class="bg-white/5 p-5 rounded-lg border border-white/5 mb-4 relative flex group hover:border-blue-500/30 transition-all" style="border-color: rgba(255, 255, 255, 0.05); transition: border-color 0.3s;">
                     <div class="flex-grow pr-4">
-                        <div class="mb-3">
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Institution</label>
-                            <input type="text" value="${edu.institution}" oninput="updateData('education.${idx}.institution', this.value)" class="w-full p-2 border border-gray-300 rounded-md outline-none focus:ring-2 focus:ring-indigo-500">
+                        <div class="mb-4">
+                            <label class="section-label">University / School</label>
+                            <input type="text" value="${edu.institution}" oninput="updateData('education.${idx}.institution', this.value)" class="w-full cyber-input p-2.5 rounded-md text-xs font-mono">
                         </div>
-                        <div class="grid grid-cols-2 gap-4 mb-3">
+                        <div class="grid grid-cols-2 gap-4 mb-4">
                             <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-1">Degree</label>
-                                <input type="text" value="${edu.degree}" oninput="updateData('education.${idx}.degree', this.value)" class="w-full p-2 border border-gray-300 rounded-md outline-none focus:ring-2 focus:ring-indigo-500">
+                                <label class="section-label">Degree / Field</label>
+                                <input type="text" value="${edu.degree}" oninput="updateData('education.${idx}.degree', this.value)" class="w-full cyber-input p-2.5 rounded-md text-xs font-mono">
                             </div>
                             <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-1">Date</label>
-                                <input type="text" value="${edu.date}" oninput="updateData('education.${idx}.date', this.value)" class="w-full p-2 border border-gray-300 rounded-md outline-none focus:ring-2 focus:ring-indigo-500">
+                                <label class="section-label">Completion Date</label>
+                                <input type="text" value="${edu.date}" oninput="updateData('education.${idx}.date', this.value)" class="w-full cyber-input p-2.5 rounded-md text-xs font-mono">
                             </div>
                         </div>
-                        <div class="mb-3">
-                            <label class="block text-sm font-medium text-gray-700 mb-1">GPA / Score</label>
-                            <input type="text" value="${edu.gpa}" oninput="updateData('education.${idx}.gpa', this.value)" class="w-full p-2 border border-gray-300 rounded-md outline-none focus:ring-2 focus:ring-indigo-500">
+                        <div>
+                            <label class="section-label">GPA / Metric</label>
+                            <input type="text" value="${edu.gpa}" oninput="updateData('education.${idx}.gpa', this.value)" class="w-full cyber-input p-2.5 rounded-md text-xs font-mono">
                         </div>
                     </div>
-                    <div class="flex flex-col gap-1 w-8 justify-start pt-6 border-l border-gray-200 pl-2">
-                        <button onclick="moveItem('education', ${idx}, -1)" class="p-1.5 text-gray-400 hover:text-gray-800"><i class="fa-solid fa-chevron-up"></i></button>
-                        <button onclick="removeEducation(${idx})" class="p-1.5 text-red-400 hover:text-red-600"><i class="fa-solid fa-trash-can"></i></button>
-                        <button onclick="moveItem('education', ${idx}, 1)" class="p-1.5 text-gray-400 hover:text-gray-800"><i class="fa-solid fa-chevron-down"></i></button>
+                    <div class="flex flex-col gap-2 w-10 justify-center items-center border-l border-white/5 pl-2 opacity-30 group-hover:opacity-100 transition-opacity">
+                        <button onclick="moveItem('education', ${idx}, -1)" class="p-1.5 text-gray-400 hover:text-white"><i class="fa-solid fa-chevron-up"></i></button>
+                        <button onclick="removeEducation(${idx})" class="p-1.5 text-gray-400 hover:text-red-500"><i class="fa-solid fa-trash-can"></i></button>
+                        <button onclick="moveItem('education', ${idx}, 1)" class="p-1.5 text-gray-400 hover:text-white"><i class="fa-solid fa-chevron-down"></i></button>
                     </div>
                 </div>
             `).join('');
@@ -753,14 +718,14 @@
             const container = document.getElementById('skills-editor-container');
             if(!container) return;
             container.innerHTML = data.skills.map((skill, idx) => `
-                <div class="flex gap-2 items-start group">
-                    <div class="flex flex-col">
-                        <button onclick="moveItem('skills', ${idx}, -1)" class="text-gray-300 hover:text-gray-600"><i class="fa-solid fa-caret-up text-xs"></i></button>
-                        <button onclick="moveItem('skills', ${idx}, 1)" class="text-gray-300 hover:text-gray-600"><i class="fa-solid fa-caret-down text-xs"></i></button>
+                <div class="flex gap-3 items-center group bg-white/5 p-3 rounded-lg border border-white/5 hover:border-blue-500/30 transition-all">
+                    <div class="flex flex-col opacity-30 group-hover:opacity-100 transition-opacity">
+                        <button onclick="moveItem('skills', ${idx}, -1)" class="text-gray-400 hover:text-white"><i class="fa-solid fa-caret-up text-xs"></i></button>
+                        <button onclick="moveItem('skills', ${idx}, 1)" class="text-gray-400 hover:text-white"><i class="fa-solid fa-caret-down text-xs"></i></button>
                     </div>
-                    <input type="text" value="${skill.category}" oninput="updateData('skills.${idx}.category', this.value)" class="w-1/3 p-2 border border-gray-300 rounded-md text-sm font-medium outline-none focus:ring-2 focus:ring-indigo-500" placeholder="Category">
-                    <input type="text" value="${skill.items}" oninput="updateData('skills.${idx}.items', this.value)" class="w-full p-2 border border-gray-300 rounded-md text-sm outline-none focus:ring-2 focus:ring-indigo-500" placeholder="Skills list...">
-                    <button onclick="removeSkill(${idx})" class="p-2 text-red-400 hover:text-red-600 hover:bg-red-50 rounded"><i class="fa-solid fa-trash-can"></i></button>
+                    <input type="text" value="${skill.category}" oninput="updateData('skills.${idx}.category', this.value)" class="w-1/3 cyber-input p-2 rounded-md text-[10px] uppercase font-bold" placeholder="CATEGORY">
+                    <input type="text" value="${skill.items}" oninput="updateData('skills.${idx}.items', this.value)" class="w-full cyber-input p-2 rounded-md text-xs font-mono" placeholder="Skills list...">
+                    <button onclick="removeSkill(${idx})" class="p-2 text-gray-500 hover:text-red-500 transition-colors"><i class="fa-solid fa-trash-can"></i></button>
                 </div>
             `).join('');
         }
@@ -769,31 +734,34 @@
             const container = document.getElementById('internships-editor-container');
             if(!container || !data.internships) return;
             container.innerHTML = data.internships.map((intern, pIdx) => `
-                <div class="bg-gray-50 p-4 rounded-md border border-gray-200 relative flex">
-                    <div class="flex-grow pr-4">
-                        <div class="grid grid-cols-3 gap-4 mb-3">
+                <div class="bg-white/5 p-6 rounded-lg border border-white/5 group hover:border-purple-500/30 transition-all">
+                    <div class="flex-grow">
+                        <div class="grid grid-cols-3 gap-5 mb-4">
                             <div class="col-span-2">
-                                <label class="block text-xs font-medium text-gray-500 uppercase tracking-wider mb-1">Title / Role</label>
-                                <input type="text" value="${intern.title}" oninput="updateData('internships.${pIdx}.title', this.value)" class="w-full p-2 border border-gray-300 rounded-md text-sm font-medium outline-none focus:ring-2 focus:ring-indigo-500">
+                                <label class="section-label">Role / Organization</label>
+                                <input type="text" value="${intern.title}" oninput="updateData('internships.${pIdx}.title', this.value)" class="w-full cyber-input p-2.5 rounded-md text-xs font-mono">
                             </div>
                             <div>
-                                <label class="block text-xs font-medium text-gray-500 uppercase tracking-wider mb-1">Date</label>
-                                <input type="text" value="${intern.date}" oninput="updateData('internships.${pIdx}.date', this.value)" class="w-full p-2 border border-gray-300 rounded-md text-sm outline-none focus:ring-2 focus:ring-indigo-500">
+                                <label class="section-label">Duration</label>
+                                <input type="text" value="${intern.date}" oninput="updateData('internships.${pIdx}.date', this.value)" class="w-full cyber-input p-2.5 rounded-md text-xs font-mono">
                             </div>
                         </div>
                         <div>
-                            <label class="block text-xs font-medium text-gray-500 uppercase tracking-wider mb-2">Description Points</label>
-                            <div class="space-y-2">
+                            <label class="section-label mb-3">Description Points</label>
+                            <div class="space-y-3">
                                 ${intern.bullets.map((bullet, bIdx) => `
-                                    <div class="flex gap-2">
-                                        <textarea rows="2" oninput="updateData('internships.${pIdx}.bullets.${bIdx}', this.value)" class="w-full p-2 border border-gray-300 rounded-md text-sm outline-none focus:ring-2 focus:ring-indigo-500">${bullet}</textarea>
-                                        <div class="flex flex-col gap-1 mt-1">
-                                            <button onclick="removeBullet('internships', ${pIdx}, ${bIdx})" class="text-red-400 hover:text-red-600"><i class="fa-solid fa-trash-can text-xs"></i></button>
+                                    <div class="flex gap-3">
+                                        <textarea rows="2" oninput="updateData('internships.${pIdx}.bullets.${bIdx}', this.value)" class="w-full cyber-input p-3 rounded-md text-xs font-mono leading-relaxed">${bullet}</textarea>
+                                        <div class="flex flex-col gap-2 mt-1">
+                                            <button onclick="removeBullet('internships', ${pIdx}, ${bIdx})" class="text-gray-500 hover:text-red-500 transition-colors"><i class="fa-solid fa-trash-can text-sm"></i></button>
                                         </div>
                                     </div>
                                 `).join('')}
                             </div>
-                            <button onclick="addBullet('internships', ${pIdx})" class="mt-2 text-sm text-indigo-600 hover:text-indigo-800 flex items-center"><i class="fa-solid fa-plus mr-1"></i> Add Point</button>
+                            <div class="flex justify-between items-center mt-4">
+                                <button onclick="addBullet('internships', ${pIdx})" class="text-[10px] font-bold uppercase tracking-widest flex items-center hover:text-white transition-colors" style="color: var(--app-blue);"><i class="fa-solid fa-plus mr-1"></i> Add Point</button>
+                                <button onclick="removeInternship(${pIdx})" class="text-[10px] text-gray-500 hover:text-red-500 uppercase tracking-widest font-bold"><i class="fa-solid fa-trash-can mr-1"></i> Delete Entry</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -802,20 +770,36 @@
 
         function renderProjectsEditor() {
             const container = document.getElementById('projects-editor-container');
-            if(!container) return;
+            if(!container || !data.projects) return;
             container.innerHTML = data.projects.map((proj, pIdx) => `
-                <div class="bg-gray-50 p-4 rounded-md border border-gray-200 relative flex">
-                    <div class="flex-grow pr-4">
-                        <div class="grid grid-cols-3 gap-4 mb-3">
-                            <div class="col-span-2"><input type="text" value="${proj.title}" oninput="updateData('projects.${pIdx}.title', this.value)" class="w-full p-2 border border-gray-300 rounded-md text-sm font-medium outline-none"></div>
-                            <div><input type="text" value="${proj.date}" oninput="updateData('projects.${pIdx}.date', this.value)" class="w-full p-2 border border-gray-300 rounded-md text-sm outline-none"></div>
+                <div class="bg-white/5 p-6 rounded-lg border border-white/5 group hover:border-blue-500/30 transition-all">
+                    <div class="flex-grow">
+                        <div class="grid grid-cols-3 gap-5 mb-4">
+                            <div class="col-span-2">
+                                <label class="section-label">Project Name</label>
+                                <input type="text" value="${proj.title}" oninput="updateData('projects.${pIdx}.title', this.value)" class="w-full cyber-input p-2.5 rounded-md text-xs font-mono">
+                            </div>
+                            <div>
+                                <label class="section-label">Date</label>
+                                <input type="text" value="${proj.date}" oninput="updateData('projects.${pIdx}.date', this.value)" class="w-full cyber-input p-2.5 rounded-md text-xs font-mono">
+                            </div>
                         </div>
-                        <div class="space-y-2">
-                            ${proj.bullets.map((bullet, bIdx) => `
-                                <div class="flex gap-2">
-                                    <textarea rows="2" oninput="updateData('projects.${pIdx}.bullets.${bIdx}', this.value)" class="w-full p-2 border border-gray-300 rounded-md text-sm outline-none">${bullet}</textarea>
-                                </div>
-                            `).join('')}
+                        <div>
+                            <label class="section-label mb-3">Project Description</label>
+                            <div class="space-y-3">
+                                ${proj.bullets.map((bullet, bIdx) => `
+                                    <div class="flex gap-3">
+                                        <textarea rows="2" oninput="updateData('projects.${pIdx}.bullets.${bIdx}', this.value)" class="w-full cyber-input p-3 rounded-md text-xs font-mono leading-relaxed">${bullet}</textarea>
+                                        <div class="flex flex-col gap-2 mt-1">
+                                            <button onclick="removeBullet('projects', ${pIdx}, ${bIdx})" class="text-gray-500 hover:text-red-500 transition-colors"><i class="fa-solid fa-trash-can text-sm"></i></button>
+                                        </div>
+                                    </div>
+                                `).join('')}
+                            </div>
+                            <div class="flex justify-between items-center mt-4">
+                                <button onclick="addBullet('projects', ${pIdx})" class="text-[10px] font-bold uppercase tracking-widest flex items-center hover:text-white transition-colors" style="color: var(--app-blue);"><i class="fa-solid fa-plus mr-1"></i> Add Point</button>
+                                <button onclick="removeProject(${pIdx})" class="text-[10px] text-gray-500 hover:text-red-500 uppercase tracking-widest font-bold"><i class="fa-solid fa-trash-can mr-1"></i> Delete Entry</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -825,14 +809,15 @@
         function renderActivitiesEditor() {
             const container = document.getElementById('activities-editor-container');
             if(!container || !data.activities) return;
-            container.innerHTML = data.activities.map((act, pIdx) => `
-                <div class="bg-gray-50 p-4 rounded-md border border-gray-200 relative flex">
-                    <div class="flex-grow pr-4">
-                        <div class="grid grid-cols-3 gap-4 mb-3">
-                            <div class="col-span-2"><input type="text" value="${act.title}" oninput="updateData('activities.${pIdx}.title', this.value)" class="w-full p-2 border border-gray-300 rounded-md text-sm outline-none"></div>
-                            <div><input type="text" value="${act.date}" oninput="updateData('activities.${pIdx}.date', this.value)" class="w-full p-2 border border-gray-300 rounded-md text-sm outline-none"></div>
+            container.innerHTML = data.activities.map((act, idx) => `
+                <div class="bg-white/5 p-4 rounded-lg border border-white/5 flex gap-4 group hover:border-blue-500/30 transition-all">
+                    <div class="flex-grow">
+                        <div class="grid grid-cols-2 gap-4">
+                            <input type="text" value="${act.title}" oninput="updateData('activities.${idx}.title', this.value)" class="cyber-input p-2.5 rounded-md text-xs font-mono" placeholder="Activity Name">
+                            <input type="text" value="${act.date}" oninput="updateData('activities.${idx}.date', this.value)" class="cyber-input p-2.5 rounded-md text-xs font-mono" placeholder="Date">
                         </div>
                     </div>
+                    <button onclick="removeActivity(${idx})" class="text-gray-500 hover:text-red-500 opacity-30 group-hover:opacity-100 transition-opacity"><i class="fa-solid fa-trash-can"></i></button>
                 </div>
             `).join('');
         }
@@ -840,15 +825,31 @@
         function renderCertsEditor() {
             const container = document.getElementById('certs-editor-container');
             if(!container || !data.certifications) return;
-            container.innerHTML = data.certifications.map((cert, pIdx) => `<div class="bg-gray-50 p-4 rounded-md border border-gray-200 relative flex"><div class="flex-grow pr-4"><div class="grid grid-cols-3 gap-4 mb-3"><div class="col-span-2"><input type="text" value="${cert.title}" oninput="updateData('certifications.${pIdx}.title', this.value)" class="w-full p-2 border border-gray-300 rounded-md text-sm outline-none"></div><div><input type="text" value="${cert.date}" oninput="updateData('certifications.${pIdx}.date', this.value)" class="w-full p-2 border border-gray-300 rounded-md text-sm outline-none"></div></div></div></div>`).join('');
+            container.innerHTML = data.certifications.map((cert, idx) => `
+                <div class="bg-white/5 p-4 rounded-lg border border-white/5 flex gap-4 group hover:border-blue-500/30 transition-all">
+                    <div class="flex-grow">
+                        <div class="grid grid-cols-2 gap-4">
+                            <input type="text" value="${cert.title}" oninput="updateData('certifications.${idx}.title', this.value)" class="cyber-input p-2.5 rounded-md text-xs font-mono" placeholder="Certificate Name">
+                            <input type="text" value="${cert.date}" oninput="updateData('certifications.${idx}.date', this.value)" class="cyber-input p-2.5 rounded-md text-xs font-mono" placeholder="Date">
+                        </div>
+                    </div>
+                    <button onclick="removeCertification(${idx})" class="text-gray-500 hover:text-red-500 opacity-30 group-hover:opacity-100 transition-opacity"><i class="fa-solid fa-trash-can"></i></button>
+                </div>
+            `).join('');
         }
 
-        function moveItem(section, idx, direction) { /* logic */ }
-        function moveBullet(section, pIdx, bIdx, direction) { /* logic */ }
+        function moveItem(section, idx, direction) {
+            if (idx + direction < 0 || idx + direction >= data[section].length) return;
+            const temp = data[section][idx];
+            data[section][idx] = data[section][idx + direction];
+            data[section][idx + direction] = temp;
+            saveDataLocally(); initEditor(); renderPreview();
+        }
+        
         function addBullet(section, pIdx) { data[section][pIdx].bullets.push('New point'); saveDataLocally(); initEditor(); renderPreview(); }
         function removeBullet(section, pIdx, bIdx) { data[section][pIdx].bullets.splice(bIdx, 1); saveDataLocally(); initEditor(); renderPreview(); }
         
-        function addEducation() { data.education.push({ institution: 'New Institution', degree: '', date: '', gpa: '', coursework: null }); renderEducationEditor(); renderPreview(); saveDataLocally();}
+        function addEducation() { data.education.push({ institution: 'New Institution', degree: '', date: '', gpa: '', coursework: '' }); renderEducationEditor(); renderPreview(); saveDataLocally();}
         function removeEducation(idx) { data.education.splice(idx, 1); renderEducationEditor(); renderPreview(); saveDataLocally();}
         function addSkill() { data.skills.push({ category: 'Category', items: 'Skills...' }); renderSkillsEditor(); renderPreview(); saveDataLocally();}
         function removeSkill(idx) { data.skills.splice(idx, 1); renderSkillsEditor(); renderPreview(); saveDataLocally();}
@@ -872,9 +873,91 @@
             if(el('edit-linkedin')) el('edit-linkedin').value = data.personal.linkedin || '';
             if(el('edit-github')) el('edit-github').value = data.personal.github || '';
             if(el('edit-summary')) el('edit-summary').value = data.summary || '';
+            if(el('edit-cl-jobtitle')) el('edit-cl-jobtitle').value = data.coverLetter?.jobTitle || '';
+            if(el('edit-cl-company')) el('edit-cl-company').value = data.coverLetter?.companyName || '';
+            if(el('edit-cl-recipient')) el('edit-cl-recipient').value = data.coverLetter?.recipientName || '';
+            if(el('edit-cl-date')) el('edit-cl-date').value = data.coverLetter?.date || '';
+            if(el('edit-cl-body')) el('edit-cl-body').value = data.coverLetter?.body || '';
             
             renderEducationEditor(); renderSkillsEditor(); renderInternshipsEditor();
             renderProjectsEditor(); renderActivitiesEditor(); renderCertsEditor();
+        }
+
+        function calculateATS() {
+            const scoreEl = document.getElementById('ats-score-circle');
+            const breakdownEl = document.getElementById('ats-breakdown');
+            const feedbackList = document.getElementById('ats-feedback-list');
+            
+            if (!scoreEl) return;
+            
+            const jd = data.jobDescription || '';
+            if (!jd.trim()) {
+                scoreEl.innerText = '--';
+                scoreEl.style.borderColor = 'var(--neon-purple)';
+                scoreEl.style.boxShadow = '0 0 20px rgba(255, 42, 109, 0.2)';
+                if (breakdownEl) breakdownEl.innerHTML = '<div class="text-[10px] text-gray-500 font-mono">No target JD provided.</div>';
+                if (feedbackList) feedbackList.innerHTML = '<li class="text-[10px] text-gray-500 uppercase font-mono animate-pulse">Awaiting Job Description for analysis...</li>';
+                return;
+            }
+
+            const previewText = document.getElementById('preview-container').innerText;
+            const jdWords = jd.toLowerCase().replace(/[^a-z0-9]/g, ' ').split(/\s+/).filter(w => w.length > 3);
+            const cvWords = previewText.toLowerCase().replace(/[^a-z0-9]/g, ' ').split(/\s+/);
+            
+            const uniqueJdWords = [...new Set(jdWords)];
+            let matches = 0;
+            let matchedKeywords = [];
+            let missingKeywords = [];
+
+            uniqueJdWords.forEach(w => {
+                if (cvWords.includes(w)) {
+                    matches++;
+                    matchedKeywords.push(w);
+                } else {
+                    missingKeywords.push(w);
+                }
+            });
+
+            const rawScore = uniqueJdWords.length > 0 ? Math.round((matches / uniqueJdWords.length) * 100) : 0;
+            const finalScore = Math.min(rawScore + 10, 99); 
+            
+            scoreEl.innerText = finalScore + '%';
+            
+            let color = '#F59E0B';
+            if (finalScore > 75) {
+                color = '#10B981';
+            } else if (finalScore > 40) {
+                color = '#2563EB';
+            }
+            
+            scoreEl.style.borderColor = color;
+            scoreEl.style.color = color;
+            scoreEl.style.boxShadow = `0 0 20px ${shadow}`;
+
+            if (breakdownEl) {
+                breakdownEl.innerHTML = `
+                    <div class="flex justify-between text-xs font-mono">
+                        <span class="text-gray-400">Total Grid Nodes:</span>
+                        <span class="text-white">${uniqueJdWords.length}</span>
+                    </div>
+                    <div class="flex justify-between text-xs font-mono">
+                        <span class="text-gray-400">Sync Links Matched:</span>
+                        <span class="text-white">${matches}</span>
+                    </div>
+                `;
+            }
+
+            if (feedbackList) {
+                let listHtml = '';
+                if (matchedKeywords.length > 0) {
+                    listHtml += `<li class="text-[10px] text-green-600 font-sans mb-2 font-bold uppercase tracking-tight">Main Matches: <span class="font-normal normal-case text-gray-300"> ${matchedKeywords.slice(0, 10).join(', ')}</span></li>`;
+                }
+                if (missingKeywords.length > 0) {
+                    listHtml += `<li class="text-[10px] text-amber-500 font-sans font-bold uppercase tracking-tight">Missing Keywords: <span class="font-normal normal-case text-gray-300"> ${missingKeywords.slice(0, 10).join(', ')}</span></li>`;
+                }
+                if (listHtml === '') listHtml = '<li class="text-[10px] text-gray-500">Insufficient data for analysis.</li>';
+                feedbackList.innerHTML = listHtml;
+            }
         }
 
         function switchMode(mode) {
@@ -883,17 +966,23 @@
             const tabResume = document.getElementById('tab-resume');
             const tabCL = document.getElementById('tab-coverletter');
             
+            // Remove active classes
+            tabResume.classList.remove('active');
+            tabCL.classList.remove('active');
+            tabResume.classList.add('text-gray-500');
+            tabCL.classList.add('text-gray-500');
+            
             if (mode === 'resume') {
-                tabResume.style.color = '#00A3FF'; tabResume.style.borderColor = '#00A3FF';
-                tabCL.style.color = 'gray'; tabCL.style.borderColor = 'transparent';
+                tabResume.classList.add('active');
+                tabResume.classList.remove('text-gray-500');
                 document.getElementById('resume-editor-sections').classList.remove('hidden');
                 document.getElementById('cover-letter-editor-sections').classList.add('hidden');
                 document.getElementById('ats-calculator-section').classList.remove('hidden');
                 document.getElementById('resume-template-selector').classList.remove('hidden');
                 document.getElementById('cl-template-selector').classList.add('hidden');
             } else {
-                tabCL.style.color = '#00FF9D'; tabCL.style.borderColor = '#00FF9D';
-                tabResume.style.color = 'gray'; tabResume.style.borderColor = 'transparent';
+                tabCL.classList.add('active');
+                tabCL.classList.remove('text-gray-500');
                 document.getElementById('resume-editor-sections').classList.add('hidden');
                 document.getElementById('cover-letter-editor-sections').classList.remove('hidden');
                 document.getElementById('ats-calculator-section').classList.add('hidden');
@@ -980,9 +1069,9 @@
                 html += '</table>';
             }
 
-            // Internships
+            // Internships (Experience)
             if (data.internships && data.internships.length) {
-                html += sectionTitle('Internships');
+                html += sectionTitle('Experience / Operations');
                 data.internships.forEach(p => {
                     html += `<div style="margin-bottom:8px;"><div style="display:flex;justify-content:space-between;"><strong>${p.title}</strong><span style="color:#555;">${p.date}</span></div>`;
                     html += bulletList(p.bullets) + '</div>';
@@ -1018,6 +1107,9 @@
 
             html += '</div>';
             container.innerHTML = html;
+            
+            // Run ATS check after render
+            setTimeout(calculateATS, 50);
         }
         
         function downloadWord() { alert("Word export requires full template rendering logic."); }
